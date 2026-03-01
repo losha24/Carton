@@ -1,0 +1,130 @@
+
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>יוצר הדמויות החכם</title>
+<link rel="manifest" href="manifest.json">
+<style>
+body { font-family: Arial; margin:0; background:#f4f4f4; }
+header { background:#111; color:white; padding:15px; text-align:center; }
+.container { padding:15px; max-width:900px; margin:auto; }
+input, textarea, select, button {
+    width:100%; padding:10px; margin:6px 0; border-radius:6px; border:1px solid #ccc;
+}
+button { cursor:pointer; background:#111; color:white; }
+button:hover { opacity:0.9; }
+.card {
+    background:white; padding:15px; margin-top:10px;
+    border-radius:8px; box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+img { max-width:100%; border-radius:8px; margin-top:10px; }
+.dark { background:#1e1e1e; color:white; }
+.dark .card { background:#2c2c2c; }
+</style>
+</head>
+<body>
+<header>
+<h2>🎭 יוצר הדמויות החכם</h2>
+<button onclick="toggleMode()">מצב כהה / בהיר</button>
+</header>
+
+<div class="container">
+<input id="name" placeholder="שם הדמות">
+<input id="age" placeholder="גיל">
+<input id="job" placeholder="מקצוע">
+<select id="type">
+<option>מצוירת</option>
+<option>מקצועית</option>
+<option>פנטזיה</option>
+</select>
+<textarea id="traits" placeholder="תכונות אופי"></textarea>
+<textarea id="powers" placeholder="כוחות"></textarea>
+<textarea id="weakness" placeholder="חולשות"></textarea>
+<textarea id="story" placeholder="סיפור רקע"></textarea>
+
+<button onclick="generateImage()">יצירת תמונה עם AI</button>
+<div id="imageContainer"></div>
+
+<button onclick="saveCharacter()">שמור דמות</button>
+<button onclick="exportJSON()">ייצוא JSON</button>
+<button onclick="resetAll()">איפוס</button>
+
+<div id="characters"></div>
+</div>
+
+<script>
+let characters = JSON.parse(localStorage.getItem("characters") || "[]");
+
+function render() {
+    document.getElementById("characters").innerHTML = "";
+    characters.forEach((c,i)=>{
+        document.getElementById("characters").innerHTML += `
+        <div class="card">
+            <h3>${c.name}</h3>
+            <p>גיל: ${c.age}</p>
+            <p>מקצוע: ${c.job}</p>
+            <img src="${c.image}" />
+            <button onclick="deleteChar(${i})">מחק</button>
+        </div>`;
+    });
+}
+render();
+
+function saveCharacter() {
+    const char = {
+        name:name.value,
+        age:age.value,
+        job:job.value,
+        type:type.value,
+        traits:traits.value,
+        powers:powers.value,
+        weakness:weakness.value,
+        story:story.value,
+        image: document.querySelector("#imageContainer img")?.src || ""
+    };
+    characters.push(char);
+    localStorage.setItem("characters", JSON.stringify(characters));
+    render();
+}
+
+function deleteChar(i){
+    characters.splice(i,1);
+    localStorage.setItem("characters", JSON.stringify(characters));
+    render();
+}
+
+function resetAll(){
+    if(confirm("למחוק הכל?")){
+        localStorage.clear();
+        location.reload();
+    }
+}
+
+function exportJSON(){
+    const blob = new Blob([JSON.stringify(characters,null,2)], {type:"application/json"});
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "characters.json";
+    a.click();
+}
+
+function toggleMode(){
+    document.body.classList.toggle("dark");
+}
+
+async function generateImage(){
+    const prompt = `${name.value} ${job.value} ${type.value} ${traits.value}`;
+    const img = document.createElement("img");
+    img.src = "https://image.pollinations.ai/prompt/" + encodeURIComponent(prompt);
+    document.getElementById("imageContainer").innerHTML = "";
+    document.getElementById("imageContainer").appendChild(img);
+}
+
+if("serviceWorker" in navigator){
+    navigator.serviceWorker.register("sw.js");
+}
+</script>
+</body>
+</html>
