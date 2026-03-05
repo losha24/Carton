@@ -1,12 +1,11 @@
 {
   "name": "קרטון - מידע רכב",
   "short_name": "קרטון",
-  "description": "בדיקת פרטי רכב ומאגר משרד התחבורה",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#f8f9fa",
   "theme_color": "#2c3e50",
-  "orientation": "portrait",
+  "description": "סריקת נתוני רכב ממשרד התחבורה",
   "icons": [
     {
       "src": "https://cdn-icons-png.flaticon.com/512/741/741407.png",
