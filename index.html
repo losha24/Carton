@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>קרטון - מידע רכב מקיף</title>
+    <link rel="manifest" href="manifest.json">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --accent: #3498db;
+            --success: #27ae60;
+            --danger: #e74c3c;
+            --warning: #f39c12;
+            --bg: #f8f9fa;
+            --white: #ffffff;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg);
+            margin: 0;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--primary);
+        }
+
+        /* לוגו באמצע */
+        .header {
+            text-align: center;
+            margin: 20px 0 30px;
+        }
+
+        .logo {
+            font-size: 3.5rem;
+            margin: 0;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+        }
+
+        .app-name {
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin: 5px 0;
+            color: var(--primary);
+        }
+
+        .version {
+            font-size: 0.8rem;
+            opacity: 0.6;
+        }
+
+        /* תיבת חיפוש */
+        .search-box {
+            width: 100%;
+            max-width: 450px;
+            background: var(--white);
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            box-sizing: border-box;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 18px;
+            font-size: 1.5rem;
+            border: 2px solid #edf2f7;
+            border-radius: 12px;
+            text-align: center;
+            outline: none;
+            transition: border-color 0.3s;
+            margin-bottom: 20px;
+            -moz-appearance: textfield;
+        }
+
+        input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
+            -webkit-appearance: none; margin: 0;
+        }
+
+        input:focus { border-color: var(--accent); }
+
+        .btn-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        button {
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.1s, opacity 0.2s;
+        }
+
+        button:active { transform: scale(0.98); }
+
+        .btn-main { background: var(--primary); color: white; grid-column: span 2; }
+        .btn-reset { background: #eee; color: var(--primary); }
+        .btn-install { background: var(--success); color: white; }
+        .btn-pdf { background: var(--warning); color: white; width: 100%; margin-top: 15px; }
+
+        /* תוצאות */
+        #result {
+            width: 100%;
+            max-width: 450px;
+            margin-top: 25px;
+            display: none;
+        }
+
+        .card {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            border-top: 6px solid var(--accent);
+        }
+
+        .section-title {
+            font-size: 0.9rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 5px;
+            margin: 15px 0 10px;
+            font-weight: bold;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #f9f9f9;
+        }
+
+        .info-label { color: #7f8c8d; font-size: 0.95rem; }
+        .info-value { font-weight: 600; text-align: left; }
+
+        .recall-alert {
+            background: #fff5f5;
+            color: var(--danger);
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            margin-top: 5px;
+            border: 1px solid #feb2b2;
+        }
+
+        .loader {
+            display: none;
+            margin: 20px auto;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--accent);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div class="logo">📦</div>
+        <div class="app-name">קרטון</div>
+        <div class="version">גרסה 7.2.1 | מחובר למאגר ממשלתי</div>
+    </div>
+
+    <div class="search-box">
+        <input type="number" id="carInput" placeholder="מספר רכב (למשל: 12345678)" inputmode="numeric">
+        <div class="btn-group">
+            <button class="btn-main" onclick="fetchCarData()">חפש מידע מלא</button>
+            <button class="btn-reset" onclick="clearAll()">איפוס</button>
+            <button id="installBtn" class="btn-install" style="display:none;">התקן אפליקציה</button>
+        </div>
+        <div class="loader" id="loader"></div>
+    </div>
+
+    <div id="result">
+        <div class="card" id="printableArea">
+            <div id="contentBody">
+                </div>
+        </div>
+        <button class="btn-pdf" onclick="exportPDF()">שמור מסמך PDF להדפסה</button>
+    </div>
+
+    <script>
+        let deferredPrompt;
+
+        // טעינת חיפוש אחרון מה-Local Storage
+        window.onload = () => {
+            const lastSearch = localStorage.getItem('carton_last_search');
+            if (lastSearch) {
+                renderData(JSON.parse(lastSearch));
+            }
+        };
+
+        async function fetchCarData() {
+            const carId = document.getElementById('carInput').value;
+            if (!carId || carId.length < 5) return alert("נא להזין מספר רכב תקין");
+
+            toggleLoader(true);
+
+            const endpoints = {
+                basic: `https://data.gov.il/api/3/action/datastore_search?resource_id=053ad243-5e38-4213-93c7-cf135073599e&q=${carId}`,
+                tech: `https://data.gov.il/api/3/action/datastore_search?resource_id=36585801-3432-4f04-8428-59fa4f3bc412&q=${carId}`,
+                recall: `https://data.gov.il/api/3/action/datastore_search?resource_id=36111059-4d6b-4e1d-8531-1e92d992955f&q=${carId}`
+            };
+
+            try {
+                const [resBasic, resTech, resRecall] = await Promise.all([
+                    fetch(endpoints.basic).then(r => r.json()),
+                    fetch(endpoints.tech).then(r => r.json()),
+                    fetch(endpoints.recall).then(r => r.json())
+                ]);
+
+                const basicData = resBasic.result.records[0];
+                if (!basicData) {
+                    alert("הרכב לא נמצא במאגר משרד התחבורה");
+                    toggleLoader(false);
+                    return;
+                }
+
+                const fullObj = {
+                    basic: basicData,
+                    tech: resTech.result.records[0] || {},
+                    recalls: resRecall.result.records || []
+                };
+
+                localStorage.setItem('carton_last_search', JSON.stringify(fullObj));
+                renderData(fullObj);
+            } catch (err) {
+                alert("שגיאה בתקשורת עם שרתי הממשלה");
+            } finally {
+                toggleLoader(false);
+            }
+        }
+
+        function renderData(data) {
+            const b = data.basic;
+            const t = data.tech;
+            const container = document.getElementById('contentBody');
+            
+            // חישוב אגרת רישוי משוערת (לפי קבוצת רישוי ושנתון - לוגיקה בסיסית)
+            let fee = "בבדיקה...";
+            if (b.kvutzat_rishuy) {
+                const baseFees = [0, 800, 1100, 1500, 2100, 3200, 4500, 5500];
+                fee = "₪" + (baseFees[parseInt(b.kvutzat_rishuy)] || "משתנה");
+            }
+
+            let html = `
+                <h2 style="text-align:center; margin-top:0;">${b.tozeret_nm} ${b.kinuy_mishari}</h2>
+                <div style="text-align:center; font-size:1.2rem; background:#eee; padding:5px; border-radius:5px; font-weight:bold;">${b.mispar_rechev}</div>
+                
+                <div class="section-title">זיהוי ובעלות</div>
+                ${createRow("שנת יצור", b.shnat_yitzur)}
+                ${createRow("מועד עלייה לכביש", b.moed_aliya_lakvish)}
+                ${createRow("בעלות", b.baalut)}
+                ${createRow("צבע רכב", b.tzeva_rechev)}
+                
+                <div class="section-title">מפרט טכני</div>
+                ${createRow("סוג דלק", t.sug_delek_nm || "לא זמין")}
+                ${createRow("נפח מנוע", (t.nefach_manoa ? t.nefach_manoa + " סמ''ק" : "לא זמין"))}
+                ${createRow("רמת אבזור בטיחות", b.ramat_eivzur_betichut)}
+                
+                <div class="section-title">רישוי ואגרות</div>
+                ${createRow("תוקף טסט", b.tokef_test)}
+                ${createRow("קבוצת רישוי", b.kvutzat_rishuy)}
+                ${createRow("אגרת רישוי משוערת", fee)}
+            `;
+
+            if (data.recalls.length > 0) {
+                html += `<div class="section-title" style="color:red;">קריאות לתיקון (RECALL)</div>`;
+                data.recalls.forEach(r => {
+                    html += `<div class="recall-alert"><strong>${r.SUG_RECALL}:</strong> ${r.TEIUR_RECALL}</div>`;
+                });
+            }
+
+            container.innerHTML = html;
+            document.getElementById('result').style.display = 'block';
+        }
+
+        function createRow(label, value) {
+            return `<div class="info-row"><span class="info-label">${label}</span><span class="info-value">${value || '---'}</span></div>`;
+        }
+
+        function toggleLoader(show) {
+            document.getElementById('loader').style.display = show ? 'block' : 'none';
+        }
+
+        function clearAll() {
+            localStorage.removeItem('carton_last_search');
+            document.getElementById('carInput').value = "";
+            document.getElementById('result').style.display = 'none';
+        }
+
+        function exportPDF() {
+            const element = document.getElementById('printableArea');
+            const carId = document.getElementById('carInput').value || "vehicle";
+            const opt = {
+                margin: 10,
+                filename: `Carton_Report_${carId}.pdf`,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+            html2pdf().set(opt).from(element).save();
+        }
+
+        // PWA Installation Logic
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            document.getElementById('installBtn').style.display = 'block';
+        });
+
+        document.getElementById('installBtn').addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                deferredPrompt = null;
+            } else {
+                alert("להתקנה באייפון: לחץ על 'שתף' ולאחר מכן 'הוסף למסך הבית'");
+            }
+        });
+    </script>
+</body>
+</html>
