@@ -1,4 +1,4 @@
-const CACHE_NAME = 'carton-v7.2.1';
+const CACHE_NAME = 'carton-v1';
 const ASSETS = [
   './',
   './index.html',
