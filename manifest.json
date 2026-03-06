@@ -1,10 +1,10 @@
 {
-  "name": "Math Kids Project",
+  "name": "אלופי המתמטיקה",
   "short_name": "MathKids",
   "version": "1.0.0",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#F0F4F8",
+  "background_color": "#F0F7FF",
   "theme_color": "#4CAF50",
   "icons": [
     {
