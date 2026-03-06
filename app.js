@@ -3,37 +3,34 @@ document.addEventListener('DOMContentLoaded', () => {
     let myItems = JSON.parse(localStorage.getItem('math_items')) || [];
     let deferredPrompt;
 
-    // --- רישום Service Worker ---
     if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('sw.js').then(() => console.log('SW Active'));
+        navigator.serviceWorker.register('sw.js');
     }
 
-    // --- טיפול בהתקנת PWA ---
-    const installContainer = document.getElementById('install-container');
+    const scoreEl = document.getElementById('score');
     const installBtn = document.getElementById('install-btn');
 
+    const updateScore = () => {
+        scoreEl.innerText = score;
+        localStorage.setItem('math_coins', score);
+    };
+
+    // לוגיקת התקנה
     window.addEventListener('beforeinstallprompt', (e) => {
-        // מונע מהדפדפן להציג את הבאנר המקורי
         e.preventDefault();
-        // שומר את האירוע כדי להפעיל אותו בלחיצה על הכפתור שלנו
         deferredPrompt = e;
-        // מציג את כפתור ההתקנה מתחת לחנות
-        installContainer.classList.remove('hidden');
+        installBtn.classList.remove('hidden');
     });
 
     installBtn.addEventListener('click', async () => {
         if (deferredPrompt) {
             deferredPrompt.prompt();
             const { outcome } = await deferredPrompt.userChoice;
-            if (outcome === 'accepted') {
-                console.log('User installed the app');
-            }
+            if (outcome === 'accepted') installBtn.classList.add('hidden');
             deferredPrompt = null;
-            installContainer.classList.add('hidden');
         }
     });
 
-    // --- שאר הלוגיקה (חנות, משחק וקושי) ---
     const storeItems = [
         { id: 1, name: '5 דקות משחק', price: 10, icon: '⏱️' },
         { id: 2, name: '10 דקות משחק', price: 20, icon: '⏲️' },
@@ -41,17 +38,10 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: 4, name: '20 דקות משחק', price: 40, icon: '⌛' }
     ];
 
-    const scoreEl = document.getElementById('score');
-    const updateScore = () => {
-        scoreEl.innerText = score;
-        localStorage.setItem('math_coins', score);
-    };
-
     window.refreshTable = (type) => {
         const container = document.getElementById(`${type}-table`);
         container.innerHTML = '';
-        // קושי עולה: עד 10 מטבעות (טווח 10), עד 50 (טווח 20), מעל זה (טווח 50)
-        const range = score < 10 ? 10 : (score < 50 ? 20 : 50);
+        const range = score < 20 ? 10 : (score < 60 ? 25 : 100);
 
         for (let i = 0; i < 5; i++) {
             let n1 = Math.floor(Math.random() * range) + 1;
@@ -85,8 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // ניווט
-    document.querySelectorAll('.tabs button').forEach(btn => {
+    document.querySelectorAll('.tabs button:not(#install-btn)').forEach(btn => {
         btn.addEventListener('click', () => {
             document.querySelectorAll('.view').forEach(v => v.classList.add('hidden'));
             document.querySelectorAll('.tabs button').forEach(b => b.classList.remove('active'));
@@ -101,8 +90,8 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('store-items').innerHTML = storeItems.map(item => `
             <div class="store-item">
                 <div class="icon">${item.icon}</div>
-                <div>${item.name}</div>
-                <div style="color:var(--secondary); font-weight:bold">${item.price} 🪙</div>
+                <div style="font-weight:bold">${item.name}</div>
+                <div style="color:var(--secondary)">${item.price} 🪙</div>
                 <button class="buy-btn" ${score < item.price ? 'disabled' : ''} onclick="buy(${item.id})">קנה</button>
             </div>
         `).join('');
