@@ -1,5 +1,5 @@
-const cacheName = 'math-pwa-v1.0.1';
-const assets = ['./', './index.html', './style.css', './app.js', './manifest.json'];
+const cacheName = 'math-kids-v1.0.2';
+const assets = ['./', './index.html', './style.css', './app.js', './manifest.json', './icon.png'];
 
 self.addEventListener('install', e => {
     e.waitUntil(caches.open(cacheName).then(cache => cache.addAll(assets)));
