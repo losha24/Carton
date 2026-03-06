@@ -6,10 +6,9 @@
   "display": "standalone",
   "background_color": "#F0F7FF",
   "theme_color": "#4CAF50",
-  "description": "משחק למידה עם פרסים לילדים",
   "icons": [
     {
-      "src": "https://cdn-icons-png.flaticon.com/512/3021/3021845.png",
+      "src": "./icon.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
