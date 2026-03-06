@@ -1,5 +1,11 @@
-const CACHE_NAME = 'math-pwa-v2';
-const ASSETS = ['./index.html', './style.css', './app.js', './manifest.json', './icon.png'];
+const CACHE_NAME = 'math-pwa-v1.0.2'; // שנה תמיד כשאתה מעלה לגיטהאב
+const ASSETS = [
+  './index.html',
+  './style.css',
+  './app.js',
+  './manifest.json',
+  './icon.PNG'
+];
 
 self.addEventListener('install', (e) => {
   self.skipWaiting();
