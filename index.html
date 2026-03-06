@@ -3,18 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>אלופי המתמטיקה - V1.0.0</title>
-    <link rel="stylesheet" href="style.css">
+    <title>אלופי המתמטיקה - V1.0.1</title>
+    <link rel="stylesheet" href="style.css?v=1.0.1">
     <link rel="manifest" href="manifest.json">
-    <link rel="icon" type="image/png" href="icon.png">
-    <link rel="apple-touch-icon" href="icon.png">
+    <link rel="icon" type="image/png" href="icon.PNG">
+    <link rel="apple-touch-icon" href="icon.PNG">
     <meta name="theme-color" content="#4CAF50">
 </head>
 <body>
     <div class="app-container">
         <header>
             <h1>אלופי המתמטיקה 🏆</h1>
-            <p class="version-tag">גרסה 1.0.0</p>
             <div class="score-display">
                 <span>מטבעות: </span><span id="score">0</span> 🪙
             </div>
@@ -22,9 +21,10 @@
 
         <nav class="tabs">
             <button id="tab-play" class="active">משחק 🎮</button>
-            <button id="tab-store">חנות פרסים 🎁</button>
-            <button id="tab-inventory">הפרסים שלי 🎒</button>
+            <button id="tab-store">חנות 🎁</button>
+            <button id="tab-inventory">האוסף 🎒</button>
             <button id="install-btn" class="hidden install-tab">התקן 📱</button>
+            <button id="reset-game-btn" class="reset-btn">איפוס 🛑</button>
         </nav>
 
         <main id="view-play" class="view active-view">
@@ -52,6 +52,6 @@
             <div id="my-items" class="items-grid"></div>
         </main>
     </div>
-    <script src="app.js"></script>
+    <script src="app.js?v=1.0.1"></script>
 </body>
 </html>
