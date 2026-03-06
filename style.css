@@ -25,3 +25,16 @@ input.incorrect { border-color: #F44336; background: #FFEBEE; }
 
 #update-toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #333; color: white; padding: 12px 20px; border-radius: 50px; display: flex; gap: 10px; z-index: 1000; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
 #update-toast button { background: var(--secondary); border: none; color: white; padding: 4px 10px; border-radius: 15px; cursor: pointer; }
+
+.section-header div {
+    display: flex;
+    gap: 5px;
+}
+.refresh-small {
+    padding: 5px 8px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    background: #f9f9f9;
+}
