@@ -8,8 +8,6 @@
     <link rel="manifest" href="manifest.json">
     <link rel="icon" type="image/png" href="icon.png">
     <link rel="apple-touch-icon" href="icon.png">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="theme-color" content="#4CAF50">
 </head>
 <body>
@@ -18,8 +16,7 @@
             <h1>אלופי המתמטיקה 🏆</h1>
             <p class="version-tag">גרסה 1.0.0</p>
             <div class="score-display">
-                <span>מטבעות: </span>
-                <span id="score">0</span> 🪙
+                <span>מטבעות: </span><span id="score">0</span> 🪙
             </div>
         </header>
 
@@ -31,39 +28,30 @@
         </nav>
 
         <main id="view-play" class="view active-view">
-            <div class="exercises-container">
-                <div class="exercise-section card">
-                    <div class="section-header">
-                        <h3>חיבור ➕</h3>
-                        <button class="refresh-small" onclick="window.refreshTable('addition')">🔄</button>
-                    </div>
-                    <div id="addition-table" class="math-grid"></div>
+            <div class="exercise-section card">
+                <div class="section-header">
+                    <h3>חיבור ➕</h3>
+                    <button class="refresh-small" onclick="window.refreshTable('addition')">🔄</button>
                 </div>
-                <div class="exercise-section card">
-                    <div class="section-header">
-                        <h3>חיסור ➖</h3>
-                        <button class="refresh-small" onclick="window.refreshTable('subtraction')">🔄</button>
-                    </div>
-                    <div id="subtraction-table" class="math-grid"></div>
+                <div id="addition-table" class="math-grid"></div>
+            </div>
+            <div class="exercise-section card">
+                <div class="section-header">
+                    <h3>חיסור ➖</h3>
+                    <button class="refresh-small" onclick="window.refreshTable('subtraction')">🔄</button>
                 </div>
+                <div id="subtraction-table" class="math-grid"></div>
             </div>
         </main>
 
         <main id="view-store" class="view hidden">
-            <div class="store-header">
-                <h2>חנות הפרסים 🎁</h2>
-            </div>
             <div id="store-items" class="items-grid"></div>
         </main>
 
         <main id="view-inventory" class="view hidden">
-            <div class="store-header">
-                <h2>האוסף שלי 🎒</h2>
-            </div>
             <div id="my-items" class="items-grid"></div>
         </main>
     </div>
-
     <script src="app.js"></script>
 </body>
 </html>
