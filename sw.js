@@ -1,4 +1,4 @@
-const cacheName = 'math-kids-v1-0-1';
+const cacheName = 'math-pwa-v1.0.1';
 const assets = ['./', './index.html', './style.css', './app.js', './manifest.json'];
 
 self.addEventListener('install', e => {
