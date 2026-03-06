@@ -2,222 +2,63 @@
 <html lang="he" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-    <title>קרטון - מידע רכב</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>אלופי המתמטיקה - חנות הפרסים</title>
+    <link rel="stylesheet" href="style.css">
     <link rel="manifest" href="manifest.json">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <style>
-        :root {
-            --primary: #2c3e50;
-            --accent: #3498db;
-            --bg: #f8f9fa;
-            --card: #ffffff;
-            --text: #2d3436;
-        }
-
-        body {
-            font-family: 'Segoe UI', system-ui, sans-serif;
-            background-color: var(--bg);
-            margin: 0; padding: 15px;
-            display: flex; flex-direction: column; align-items: center;
-            color: var(--text);
-        }
-
-        .header { text-align: center; margin: 25px 0; }
-        .logo { font-size: 4rem; margin: 0; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1)); }
-        .app-title { font-size: 2.4rem; font-weight: 900; color: var(--primary); margin: 0; }
-        .version { font-size: 0.8rem; color: #95a5a6; margin-top: 5px; }
-
-        .search-box {
-            width: 100%; max-width: 450px;
-            background: var(--card);
-            padding: 30px; border-radius: 25px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.05);
-            box-sizing: border-box;
-        }
-
-        input {
-            width: 100%; padding: 20px; font-size: 1.8rem;
-            border: 2px solid #edf2f7; border-radius: 18px;
-            text-align: center; box-sizing: border-box;
-            margin-bottom: 20px; outline: none; transition: 0.3s;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
-        }
-        input:focus { border-color: var(--accent); background: #fff; }
-
-        .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        button {
-            padding: 16px; border: none; border-radius: 14px;
-            font-weight: bold; cursor: pointer; transition: 0.2s;
-            font-size: 1rem;
-        }
-        button:active { transform: scale(0.96); }
-
-        .btn-search { background: var(--primary); color: white; grid-column: span 2; font-size: 1.2rem; }
-        .btn-reset { background: #f1f2f6; color: #57606f; }
-        .btn-install { background: #27ae60; color: white; }
-        .btn-pdf { background: #f39c12; color: white; width: 100%; margin-top: 15px; display: none; }
-
-        #result { width: 100%; max-width: 450px; margin-top: 25px; display: none; }
-        .info-card {
-            background: white; padding: 25px; border-radius: 25px;
-            box-shadow: 0 15px 45px rgba(0,0,0,0.1);
-            border-top: 8px solid var(--accent);
-        }
-        .row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #f8f9fa; }
-        .label { color: #7f8c8d; font-size: 0.9rem; }
-        .value { font-weight: 700; color: var(--primary); text-align: left; }
-        
-        .section-tag { font-size: 0.75rem; color: var(--accent); margin-top: 20px; font-weight: bold; text-transform: uppercase; border-bottom: 2px solid #f1f2f6; padding-bottom: 4px; }
-
-        .loader {
-            display: none; width: 35px; height: 35px;
-            border: 5px solid #f3f3f3; border-top: 5px solid var(--accent);
-            border-radius: 50%; animation: spin 1s linear infinite;
-            margin: 20px auto;
-        }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        
-        @media (max-width: 400px) {
-            .app-title { font-size: 1.8rem; }
-            input { font-size: 1.4rem; }
-        }
-    </style>
 </head>
 <body>
+    <div class="app-container">
+        <header>
+            <h1>אלופי המתמטיקה 🏆</h1>
+            <div class="score-display">
+                <span>מטבעות: </span>
+                <span id="score">0</span> 🪙
+            </div>
+        </header>
 
-    <div class="header">
-        <div class="logo">📦</div>
-        <h1 class="app-title">קרטון</h1>
-        <div class="version">גרסה סופית 7.2.1 | מערכת סריקה</div>
+        <nav class="tabs">
+            <button id="tab-play" class="active">משחק 🎮</button>
+            <button id="tab-store">חנות פרסים 🎁</button>
+            <button id="tab-inventory">הפרסים שלי 🎒</button>
+        </nav>
+
+        <main id="view-play" class="view active-view">
+            <div class="exercises-container">
+                <div class="exercise-section card">
+                    <h3>תרגילי חיבור ➕</h3>
+                    <div id="addition-table" class="math-grid"></div>
+                </div>
+                <div class="exercise-section card">
+                    <h3>תרגילי חיסור ➖</h3>
+                    <div id="subtraction-table" class="math-grid"></div>
+                </div>
+            </div>
+            <button id="refresh-exercises-btn" class="action-btn">תרגילים חדשים 🔄</button>
+        </main>
+
+        <main id="view-store" class="view hidden">
+            <div class="store-header">
+                <h2>חנות הפרסים הגדולה!</h2>
+                <p>פתרו תרגילים, אספו מטבעות וקנו פרסים שווים!</p>
+            </div>
+            <div id="store-items" class="items-grid"></div>
+        </main>
+
+        <main id="view-inventory" class="view hidden">
+            <div class="store-header">
+                <h2>הפרסים שהשגתי 🏆</h2>
+            </div>
+            <div id="my-items" class="items-grid"></div>
+        </main>
     </div>
 
-    <div class="search-box">
-        <input type="number" id="v_num" placeholder="הכנס מספר רכב" inputmode="numeric">
-        <div class="btn-grid">
-            <button class="btn-search" onclick="fetchVehicleData()">חפש רכב</button>
-            <button class="btn-reset" onclick="resetApp()">איפוס</button>
-            <button id="installBtn" class="btn-install" style="display:none;">התקן</button>
-        </div>
-        <div id="loader" class="loader"></div>
-    </div>
-
-    <div id="result">
-        <div id="pdf-area" class="info-card">
-            <div id="data-body"></div>
-        </div>
-        <button id="pdfBtn" class="btn-pdf" onclick="generatePDF()">שמור כקובץ PDF</button>
-    </div>
-
+    <script src="app.js"></script>
     <script>
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('./sw.js');
+            navigator.serviceWorker.register('sw.js')
+                .then(() => console.log('Service Worker Registered'));
         }
-
-        async function fetchVehicleData() {
-            const num = document.getElementById('v_num').value;
-            if (!num || num.length < 5) {
-                alert("נא להזין מספר רכב תקין");
-                return;
-            }
-
-            const loader = document.getElementById('loader');
-            const resultDiv = document.getElementById('result');
-            loader.style.display = 'block';
-            resultDiv.style.display = 'none';
-
-            // שימוש ב-Proxy למניעת שגיאות CORS במקרים מסוימים
-            const proxy = ""; 
-            const api_main = `https://data.gov.il/api/3/action/datastore_search?resource_id=053ad243-5e38-4213-93c7-cf135073599e&q=${num}`;
-            const api_tech = `https://data.gov.il/api/3/action/datastore_search?resource_id=36585801-3432-4f04-8428-59fa4f3bc412&q=${num}`;
-
-            try {
-                const [res1, res2] = await Promise.all([
-                    fetch(proxy + api_main).then(r => r.json()),
-                    fetch(proxy + api_tech).then(r => r.json())
-                ]);
-
-                if (res1.result.records.length > 0) {
-                    const car = res1.result.records[0];
-                    const tech = res2.result.records[0] || {};
-                    displayData(car, tech);
-                    localStorage.setItem('carton_cache', JSON.stringify({car, tech}));
-                } else {
-                    alert("הרכב לא נמצא במאגרי משרד התחבורה. וודא שהמספר תקין.");
-                }
-            } catch (error) {
-                console.error(error);
-                alert("שגיאת תקשורת: וודא שיש אינטרנט או שהמאגר הממשלתי זמין.");
-            } finally {
-                loader.style.display = 'none';
-            }
-        }
-
-        function displayData(car, tech) {
-            const body = document.getElementById('data-body');
-            const feeGroup = parseInt(car.kvutzat_rishuy) || 0;
-            const estimatedFee = feeGroup > 0 ? (800 + (feeGroup * 380)) : "לא זמין";
-
-            body.innerHTML = `
-                <div style="text-align:center;">
-                    <h2 style="margin-bottom:0; color:var(--primary);">${car.tozeret_nm}</h2>
-                    <p style="margin-top:5px; color:var(--accent); font-weight:bold;">${car.kinuy_mishari}</p>
-                    <div style="background:#2c3e50; color:white; display:inline-block; padding:8px 20px; border-radius:10px; font-size:1.6rem; font-weight:bold; letter-spacing:2px; margin:15px 0;">
-                        ${car.mispar_rechev}
-                    </div>
-                </div>
-
-                <div class="section-tag">זיהוי רכב</div>
-                <div class="row"><span class="label">שנת יצור</span><span class="value">${car.shnat_yitzur}</span></div>
-                <div class="row"><span class="label">מועד עליה</span><span class="value">${car.moed_aliya_lakvish || '---'}</span></div>
-                <div class="row"><span class="label">בעלות</span><span class="value">${car.baalut || '---'}</span></div>
-                <div class="row"><span class="label">צבע</span><span class="value">${car.tzeva_rechev}</span></div>
-
-                <div class="section-tag">מפרט טכני</div>
-                <div class="row"><span class="label">נפח מנוע</span><span class="value">${tech.nefach_manoa || '---'} סמ"ק</span></div>
-                <div class="row"><span class="label">סוג דלק</span><span class="value">${tech.sug_delek_nm || '---'}</span></div>
-                <div class="row"><span class="label">רמת אבזור</span><span class="value">${car.ramat_eivzur_betichut || '0'}</span></div>
-
-                <div class="section-h"></div>
-                <div class="section-tag">רישוי ואגרות</div>
-                <div class="row"><span class="label">תוקף טסט</span><span class="value">${car.tokef_test}</span></div>
-                <div class="row"><span class="label">קבוצת רישוי</span><span class="value">${car.kvutzat_rishuy || '---'}</span></div>
-                <div class="row" style="background:#f1f9ff; padding:10px; border-radius:8px;"><span class="label">אגרת טסט משוערת</span><span class="value" style="color:#27ae60;">₪${estimatedFee}</span></div>
-            `;
-            document.getElementById('result').style.display = 'block';
-            document.getElementById('pdfBtn').style.display = 'block';
-        }
-
-        function resetApp() {
-            document.getElementById('v_num').value = "";
-            document.getElementById('result').style.display = 'none';
-            localStorage.clear();
-        }
-
-        function generatePDF() {
-            const element = document.getElementById('pdf-area');
-            const opt = {
-                margin: 1,
-                filename: `קרטון_רכב_${document.getElementById('v_num').value}.pdf`,
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2 },
-                jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
-            };
-            html2pdf().set(opt).from(element).save();
-        }
-
-        // התקנה
-        let deferredPrompt;
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            document.getElementById('installBtn').style.display = 'block';
-        });
-
-        document.getElementById('installBtn').addEventListener('click', () => {
-            if (deferredPrompt) deferredPrompt.prompt();
-        });
     </script>
 </body>
 </html>
