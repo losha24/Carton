@@ -1,180 +1,103 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // --- State (מצב המערכת) ---
-    let score = parseInt(localStorage.getItem('mathScore')) || 0;
-    let inventory = JSON.parse(localStorage.getItem('mathInventory')) || [];
+    let score = parseInt(localStorage.getItem('math_coins')) || 0;
+    let myItems = JSON.parse(localStorage.getItem('math_items')) || [];
 
-    // הגדרת הפרסים בחנות - תוכל לשנות ולעדכן אותם בעתיד בקלות
     const storeItems = [
-        { id: 'medal_bronze', name: 'מדליית ארד', cost: 5, icon: '🥉' },
-        { id: 'medal_silver', name: 'מדליית כסף', cost: 10, icon: '🥈' },
-        { id: 'medal_gold', name: 'מדליית זהב', cost: 20, icon: '🥇' },
-        { id: 'crown', name: 'כתר מלכותי', cost: 35, icon: '👑' },
-        { id: 'rocket', name: 'חללית', cost: 50, icon: '🚀' },
-        { id: 'diamond', name: 'יהלום נדיר', cost: 100, icon: '💎' }
+        { id: 1, name: 'גלידה', price: 5, icon: '🍦' },
+        { id: 2, name: 'כדורגל', price: 10, icon: '⚽' },
+        { id: 3, name: 'גיטרה', price: 20, icon: '🎸' },
+        { id: 4, name: 'מכונית', price: 50, icon: '🏎️' },
+        { id: 5, name: 'רובוט', price: 100, icon: '🤖' }
     ];
 
-    const scoreElement = document.getElementById('score');
-    updateScoreDisplay();
+    const scoreEl = document.getElementById('score');
+    const updateScore = () => {
+        scoreEl.innerText = score;
+        localStorage.setItem('math_coins', score);
+    };
 
-    // --- ניווט בין המסכים ---
-    const tabs = ['play', 'store', 'inventory'];
-    tabs.forEach(tab => {
-        document.getElementById(`tab-${tab}`).addEventListener('click', () => {
-            // עדכון כפתורי הניווט
-            tabs.forEach(t => document.getElementById(`tab-${t}`).classList.remove('active'));
-            document.getElementById(`tab-${tab}`).classList.add('active');
-            
-            // עדכון התצוגה
-            tabs.forEach(t => document.getElementById(`view-${t}`).classList.add('hidden'));
-            const activeView = document.getElementById(`view-${tab}`);
-            activeView.classList.remove('hidden');
-            activeView.classList.add('active-view');
-
-            // רינדור התוכן הרלוונטי
-            if (tab === 'store') renderStore();
-            if (tab === 'inventory') renderInventory();
+    const renderExercises = () => {
+        ['addition', 'subtraction'].forEach(type => {
+            const container = document.getElementById(`${type}-table`);
+            container.innerHTML = '';
+            for (let i = 0; i < 5; i++) {
+                let n1 = Math.floor(Math.random() * 10) + 1;
+                let n2 = Math.floor(Math.random() * 10) + 1;
+                if (type === 'subtraction' && n1 < n2) [n1, n2] = [n2, n1];
+                
+                const ans = type === 'addition' ? n1 + n2 : n1 - n2;
+                const div = document.createElement('div');
+                div.className = 'exercise-row';
+                div.innerHTML = `<span>${n1} ${type === 'addition' ? '+' : '-'} ${n2} =</span>
+                                <input type="number" data-ans="${ans}">`;
+                container.appendChild(div);
+            }
         });
-    });
+    };
 
-    // --- לוגיקת המשחק והתרגילים ---
-    function generateExercise(type) {
-        let num1, num2, answer;
-        if (type === 'addition') {
-            num1 = Math.floor(Math.random() * 10) + 1;
-            num2 = Math.floor(Math.random() * 10) + 1;
-            answer = num1 + num2;
-            return { text: `${num1} + ${num2} = `, answer: answer };
-        } else {
-            num1 = Math.floor(Math.random() * 10) + 5; 
-            num2 = Math.floor(Math.random() * num1) + 1;
-            answer = num1 - num2;
-            return { text: `${num1} - ${num2} = `, answer: answer };
-        }
-    }
-
-    function renderExercises(containerId, type, count) {
-        const container = document.getElementById(containerId);
-        container.innerHTML = '';
-        
-        for (let i = 0; i < count; i++) {
-            const ex = generateExercise(type);
-            const row = document.createElement('div');
-            row.className = 'exercise-row';
-            row.innerHTML = `
-                <span>${ex.text}</span>
-                <input type="number" data-answer="${ex.answer}">
-            `;
-            container.appendChild(row);
-        }
-    }
-
-    function checkAnswers(e) {
-        if (e.target.tagName === 'INPUT') {
+    document.body.addEventListener('input', (e) => {
+        if (e.target.dataset.ans) {
             const input = e.target;
-            const correctAnswer = parseInt(input.getAttribute('data-answer'));
-            const userAnswer = parseInt(input.value);
-
-            if (isNaN(userAnswer)) {
-                input.className = '';
-                return;
-            }
-
-            if (userAnswer === correctAnswer) {
+            const correct = parseInt(input.dataset.ans);
+            const user = parseInt(input.value);
+            if (user === correct) {
                 if (!input.classList.contains('correct')) {
-                    input.className = 'correct';
-                    input.disabled = true; // נועל את התא כדי למנוע ספירה כפולה
-                    addScore(1);
+                    input.classList.add('correct');
+                    input.disabled = true;
+                    score++;
+                    updateScore();
                 }
+            } else if (input.value.length >= input.dataset.ans.length) {
+                input.classList.add('incorrect');
             } else {
-                input.className = 'incorrect';
+                input.classList.remove('incorrect');
             }
         }
-    }
-
-    function addScore(points) {
-        score += points;
-        saveData();
-    }
-
-    function saveData() {
-        localStorage.setItem('mathScore', score);
-        localStorage.setItem('mathInventory', JSON.stringify(inventory));
-        updateScoreDisplay();
-    }
-
-    function updateScoreDisplay() {
-        scoreElement.innerText = score;
-    }
-
-    document.getElementById('addition-table').addEventListener('input', checkAnswers);
-    document.getElementById('subtraction-table').addEventListener('input', checkAnswers);
-
-    document.getElementById('refresh-exercises-btn').addEventListener('click', () => {
-        renderExercises('addition-table', 'addition', 5);
-        renderExercises('subtraction-table', 'subtraction', 5);
     });
 
-    // --- לוגיקת חנות הפרסים ---
-    function renderStore() {
-        const storeContainer = document.getElementById('store-items');
-        storeContainer.innerHTML = '';
+    // ניווט טאבים
+    document.querySelectorAll('.tabs button').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.view').forEach(v => v.classList.add('hidden'));
+            document.querySelectorAll('.tabs button').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById(`view-${btn.id.split('-')[1]}`).classList.remove('hidden');
+            if(btn.id === 'tab-store') renderStore();
+            if(btn.id === 'tab-inventory') renderInventory();
+        });
+    });
 
-        storeItems.forEach(item => {
-            const isBought = inventory.includes(item.id);
-            const canAfford = score >= item.cost;
-            
-            const el = document.createElement('div');
-            el.className = 'store-item';
-            el.innerHTML = `
+    const renderStore = () => {
+        const container = document.getElementById('store-items');
+        container.innerHTML = storeItems.map(item => `
+            <div class="store-item">
                 <div class="icon">${item.icon}</div>
-                <div class="name">${item.name}</div>
-                <div class="price">${isBought ? 'נרכש ✅' : item.cost + ' 🪙'}</div>
-                <button class="buy-btn" ${isBought || !canAfford ? 'disabled' : ''}>
-                    ${isBought ? 'כבר שלך' : (canAfford ? 'קנה עכשיו' : 'חסרים מטבעות')}
-                </button>
-            `;
+                <div>${item.name}</div>
+                <div>${item.price} 🪙</div>
+                <button class="buy-btn" ${score < item.price ? 'disabled' : ''} onclick="buy(${item.id})">קנה</button>
+            </div>
+        `).join('');
+    };
 
-            if (!isBought && canAfford) {
-                el.querySelector('.buy-btn').addEventListener('click', () => buyItem(item));
-            }
-            storeContainer.appendChild(el);
-        });
-    }
-
-    function buyItem(item) {
-        if (score >= item.cost && !inventory.includes(item.id)) {
-            score -= item.cost;
-            inventory.push(item.id);
-            saveData();
-            renderStore(); // רענון תצוגת החנות לאחר קנייה
+    window.buy = (id) => {
+        const item = storeItems.find(i => i.id === id);
+        if (score >= item.price) {
+            score -= item.price;
+            myItems.push(item);
+            localStorage.setItem('math_items', JSON.stringify(myItems));
+            updateScore();
+            renderStore();
         }
-    }
+    };
 
-    // --- לוגיקת המלאי (הפרסים שלי) ---
-    function renderInventory() {
-        const invContainer = document.getElementById('my-items');
-        invContainer.innerHTML = '';
+    const renderInventory = () => {
+        const container = document.getElementById('my-items');
+        container.innerHTML = myItems.map(item => `
+            <div class="store-item"><div class="icon">${item.icon}</div><div>${item.name}</div></div>
+        `).join('');
+    };
 
-        if (inventory.length === 0) {
-            invContainer.innerHTML = '<p style="text-align:center; grid-column: 1 / -1; font-size:1.2em;">עדיין לא קנית פרסים. פתור תרגילים כדי להרוויח מטבעות!</p>';
-            return;
-        }
-
-        inventory.forEach(itemId => {
-            const item = storeItems.find(i => i.id === itemId);
-            if (item) {
-                const el = document.createElement('div');
-                el.className = 'store-item';
-                el.innerHTML = `
-                    <div class="icon">${item.icon}</div>
-                    <div class="name">${item.name}</div>
-                `;
-                invContainer.appendChild(el);
-            }
-        });
-    }
-
-    // אתחול המערכת בפעם הראשונה
-    renderExercises('addition-table', 'addition', 5);
-    renderExercises('subtraction-table', 'subtraction', 5);
+    document.getElementById('refresh-exercises-btn').addEventListener('click', renderExercises);
+    renderExercises();
+    updateScore();
 });
