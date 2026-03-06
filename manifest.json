@@ -1,14 +1,16 @@
 {
   "name": "אלופי המתמטיקה",
   "short_name": "מתמטיקה",
+  "description": "משחק חשבון עם פרסים",
   "version": "1.0.0",
-  "start_url": "./index.html",
+  "start_url": "index.html",
+  "scope": ".",
   "display": "standalone",
   "background_color": "#F0F7FF",
   "theme_color": "#4CAF50",
   "icons": [
     {
-      "src": "./icon.png",
+      "src": "icon.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
