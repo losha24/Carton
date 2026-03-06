@@ -3,14 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>אלופי המתמטיקה - חנות הפרסים</title>
+    <title>אלופי המתמטיקה - גרסה 1.0.0</title>
     <link rel="stylesheet" href="style.css">
     <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#4CAF50">
 </head>
 <body>
     <div class="app-container">
         <header>
             <h1>אלופי המתמטיקה 🏆</h1>
+            <p class="version-tag">גרסה 1.0.0</p>
             <div class="score-display">
                 <span>מטבעות: </span>
                 <span id="score">0</span> 🪙
@@ -26,11 +28,11 @@
         <main id="view-play" class="view active-view">
             <div class="exercises-container">
                 <div class="exercise-section card">
-                    <h3>תרגילי חיבור ➕</h3>
+                    <h3>חיבור ➕</h3>
                     <div id="addition-table" class="math-grid"></div>
                 </div>
                 <div class="exercise-section card">
-                    <h3>תרגילי חיסור ➖</h3>
+                    <h3>חיסור ➖</h3>
                     <div id="subtraction-table" class="math-grid"></div>
                 </div>
             </div>
@@ -39,15 +41,14 @@
 
         <main id="view-store" class="view hidden">
             <div class="store-header">
-                <h2>חנות הפרסים הגדולה!</h2>
-                <p>פתרו תרגילים, אספו מטבעות וקנו פרסים שווים!</p>
+                <h2>חנות הפרסים</h2>
             </div>
             <div id="store-items" class="items-grid"></div>
         </main>
 
         <main id="view-inventory" class="view hidden">
             <div class="store-header">
-                <h2>הפרסים שהשגתי 🏆</h2>
+                <h2>האוסף שלי</h2>
             </div>
             <div id="my-items" class="items-grid"></div>
         </main>
@@ -56,8 +57,7 @@
     <script src="app.js"></script>
     <script>
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('sw.js')
-                .then(() => console.log('Service Worker Registered'));
+            navigator.serviceWorker.register('sw.js').then(() => console.log('SW Registered'));
         }
     </script>
 </body>
