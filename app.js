@@ -3,23 +3,31 @@ document.addEventListener('DOMContentLoaded', () => {
     let myItems = JSON.parse(localStorage.getItem('math_items')) || [];
     let deferredPrompt;
 
-    // רישום Service Worker
+    // --- רישום ועדכון Service Worker ---
     if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('./sw.js').catch(err => console.log(err));
+        navigator.serviceWorker.register('./sw.js').then(reg => {
+            reg.addEventListener('updatefound', () => {
+                const newWorker = reg.installing;
+                newWorker.addEventListener('statechange', () => {
+                    if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                        showUpdateNotification();
+                    }
+                });
+            });
+        });
     }
 
-    const scoreEl = document.getElementById('score');
+    function showUpdateNotification() {
+        const toast = document.createElement('div');
+        toast.id = 'update-toast';
+        toast.innerHTML = `<span>גרסה חדשה זמינה!</span><button onclick="window.location.reload()">עדכן</button>`;
+        document.body.appendChild(toast);
+    }
+
+    // --- התקנה ---
     const installBtn = document.getElementById('install-btn');
-
-    const updateScore = () => {
-        scoreEl.innerText = score;
-        localStorage.setItem('math_coins', score);
-    };
-
-    // זיהוי אפשרות התקנה
     window.addEventListener('beforeinstallprompt', (e) => {
-        e.preventDefault();
-        deferredPrompt = e;
+        e.preventDefault(); deferredPrompt = e;
         installBtn.classList.remove('hidden');
     });
 
@@ -32,13 +40,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // הסתרת כפתור אם כבר הותקן
-    window.addEventListener('appinstalled', () => {
-        installBtn.classList.add('hidden');
-        console.log('PWA installed successfully');
-    });
+    // --- משחק ולוגיקה ---
+    const scoreEl = document.getElementById('score');
+    const updateScore = () => { scoreEl.innerText = score; localStorage.setItem('math_coins', score); };
 
-    // --- שאר הפונקציות (חנות ומשחק) נשארות כפי שהיו ---
     const storeItems = [
         { id: 1, name: '5 דקות משחק', price: 10, icon: '⏱️' },
         { id: 2, name: '10 דקות משחק', price: 20, icon: '⏲️' },
@@ -50,7 +55,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const container = document.getElementById(`${type}-table`);
         container.innerHTML = '';
         const range = score < 20 ? 10 : (score < 60 ? 25 : 100);
-
         for (let i = 0; i < 5; i++) {
             let n1 = Math.floor(Math.random() * range) + 1;
             let n2 = Math.floor(Math.random() * range) + 1;
@@ -58,8 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const ans = type === 'addition' ? n1 + n2 : n1 - n2;
             const div = document.createElement('div');
             div.className = 'exercise-row';
-            div.innerHTML = `<span>${n1} ${type === 'addition' ? '+' : '-'} ${n2} =</span>
-                            <input type="number" data-ans="${ans}">`;
+            div.innerHTML = `<span>${n1} ${type === 'addition' ? '+' : '-'} ${n2} =</span><input type="number" data-ans="${ans}">`;
             container.appendChild(div);
         }
     };
@@ -67,17 +70,13 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.addEventListener('input', (e) => {
         if (e.target.dataset.ans) {
             const input = e.target;
-            const correct = parseInt(input.dataset.ans);
-            const user = parseInt(input.value);
-            if (user === correct && !input.classList.contains('correct')) {
-                input.classList.add('correct');
-                input.disabled = true;
-                score++;
-                updateScore();
-            } else if (input.value.length >= input.dataset.ans.length && user !== correct) {
+            if (parseInt(input.value) === parseInt(input.dataset.ans)) {
+                if (!input.classList.contains('correct')) {
+                    input.classList.add('correct'); input.disabled = true;
+                    score++; updateScore();
+                }
+            } else if (input.value.length >= input.dataset.ans.length) {
                 input.classList.add('incorrect');
-            } else {
-                input.classList.remove('incorrect');
             }
         }
     });
@@ -95,33 +94,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const renderStore = () => {
         document.getElementById('store-items').innerHTML = storeItems.map(item => `
-            <div class="store-item">
-                <div class="icon">${item.icon}</div>
-                <div style="font-weight:bold">${item.name}</div>
-                <div style="color:var(--secondary)">${item.price} 🪙</div>
-                <button class="buy-btn" ${score < item.price ? 'disabled' : ''} onclick="buy(${item.id})">קנה</button>
-            </div>
+            <div class="store-item"><div>${item.icon}</div><b>${item.name}</b><div>${item.price} 🪙</div>
+            <button class="buy-btn" ${score < item.price ? 'disabled' : ''} onclick="buy(${item.id})">קנה</button></div>
         `).join('');
     };
 
     window.buy = (id) => {
         const item = storeItems.find(i => i.id === id);
         if (score >= item.price) {
-            score -= item.price;
-            myItems.push({...item, date: new Date().toLocaleDateString()});
+            score -= item.price; myItems.push({...item, date: new Date().toLocaleDateString()});
             localStorage.setItem('math_items', JSON.stringify(myItems));
-            updateScore();
-            renderStore();
+            updateScore(); renderStore();
         }
     };
 
     const renderInventory = () => {
         document.getElementById('my-items').innerHTML = myItems.map(item => `
-            <div class="store-item"><div class="icon">${item.icon}</div><div>${item.name}</div><div style="font-size:0.7em">${item.date}</div></div>
+            <div class="store-item"><div>${item.icon}</div><b>${item.name}</b><div style="font-size:0.7rem">${item.date}</div></div>
         `).join('');
     };
 
-    window.refreshTable('addition');
-    window.refreshTable('subtraction');
-    updateScore();
+    window.refreshTable('addition'); window.refreshTable('subtraction'); updateScore();
 });
