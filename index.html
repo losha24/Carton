@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>אלופי המתמטיקה - גרסה 1.0.0</title>
+    <title>אלופי המתמטיקה - V1.0.0</title>
     <link rel="stylesheet" href="style.css">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#4CAF50">
@@ -28,27 +28,33 @@
         <main id="view-play" class="view active-view">
             <div class="exercises-container">
                 <div class="exercise-section card">
-                    <h3>חיבור ➕</h3>
+                    <div class="section-header">
+                        <h3>חיבור ➕</h3>
+                        <button class="refresh-small" onclick="window.refreshTable('addition')">🔄</button>
+                    </div>
                     <div id="addition-table" class="math-grid"></div>
                 </div>
                 <div class="exercise-section card">
-                    <h3>חיסור ➖</h3>
+                    <div class="section-header">
+                        <h3>חיסור ➖</h3>
+                        <button class="refresh-small" onclick="window.refreshTable('subtraction')">🔄</button>
+                    </div>
                     <div id="subtraction-table" class="math-grid"></div>
                 </div>
             </div>
-            <button id="refresh-exercises-btn" class="action-btn">תרגילים חדשים 🔄</button>
         </main>
 
         <main id="view-store" class="view hidden">
             <div class="store-header">
-                <h2>חנות הפרסים</h2>
+                <h2>חנות הפרסים 🎁</h2>
+                <p>המירו מטבעות בזמן משחק!</p>
             </div>
             <div id="store-items" class="items-grid"></div>
         </main>
 
         <main id="view-inventory" class="view hidden">
             <div class="store-header">
-                <h2>האוסף שלי</h2>
+                <h2>האוסף שלי 🎒</h2>
             </div>
             <div id="my-items" class="items-grid"></div>
         </main>
