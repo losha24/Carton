@@ -1,4 +1,4 @@
-const CACHE_NAME = 'math-pwa-v1.0.2'; // שנה תמיד כשאתה מעלה לגיטהאב
+const CACHE_NAME = 'math-pwa-v1.0.3';
 const ASSETS = [
   './index.html',
   './style.css',
