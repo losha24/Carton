@@ -3,26 +3,35 @@ document.addEventListener('DOMContentLoaded', () => {
     let myItems = JSON.parse(localStorage.getItem('math_items')) || [];
     let deferredPrompt;
 
-    // --- רישום ועדכון Service Worker ---
+    // --- רישום Service Worker עם מנגנון רענון ---
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('./sw.js').then(reg => {
-            reg.addEventListener('updatefound', () => {
-                const newWorker = reg.installing;
-                newWorker.addEventListener('statechange', () => {
-                    if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+            reg.onupdatefound = () => {
+                const installingWorker = reg.installing;
+                installingWorker.onstatechange = () => {
+                    if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
                         showUpdateNotification();
                     }
-                });
-            });
+                };
+            };
         });
     }
 
     function showUpdateNotification() {
+        if (document.getElementById('update-toast')) return;
         const toast = document.createElement('div');
         toast.id = 'update-toast';
-        toast.innerHTML = `<span>גרסה חדשה זמינה!</span><button onclick="window.location.reload()">עדכן</button>`;
+        toast.innerHTML = `<span>גרסה חדשה!</span><button onclick="window.location.reload(true)">עדכן</button>`;
         document.body.appendChild(toast);
     }
+
+    // --- איפוס משחק ---
+    document.getElementById('reset-game-btn').addEventListener('click', () => {
+        if (confirm("האם אתה בטוח שברצונך לאפס הכל? כל המטבעות והפרסים יימחקו!")) {
+            localStorage.clear();
+            window.location.reload(true);
+        }
+    });
 
     // --- התקנה ---
     const installBtn = document.getElementById('install-btn');
@@ -40,7 +49,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // --- משחק ולוגיקה ---
     const scoreEl = document.getElementById('score');
     const updateScore = () => { scoreEl.innerText = score; localStorage.setItem('math_coins', score); };
 
@@ -81,7 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    document.querySelectorAll('.tabs button:not(#install-btn)').forEach(btn => {
+    document.querySelectorAll('.tabs button:not(#install-btn):not(#reset-game-btn)').forEach(btn => {
         btn.addEventListener('click', () => {
             document.querySelectorAll('.view').forEach(v => v.classList.add('hidden'));
             document.querySelectorAll('.tabs button').forEach(b => b.classList.remove('active'));
