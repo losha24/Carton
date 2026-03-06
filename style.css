@@ -1,12 +1,16 @@
-:root { --primary: #4CAF50; --secondary: #FF9800; --bg: #F0F7FF; }
+:root { --primary: #4CAF50; --secondary: #FF9800; --bg: #F0F7FF; --danger: #f44336; }
 body { background: var(--bg); font-family: system-ui, sans-serif; margin: 0; padding: 15px; direction: rtl; }
 .app-container { width: 100%; max-width: 600px; margin: auto; }
 header { text-align: center; margin-bottom: 20px; }
 .score-display { background: #FFD700; padding: 10px 20px; border-radius: 30px; font-size: 1.5rem; font-weight: bold; }
-.tabs { display: flex; gap: 8px; margin-bottom: 20px; justify-content: center; }
-.tabs button { padding: 8px 12px; border-radius: 12px; border: 2px solid var(--primary); background: white; cursor: pointer; font-weight: bold; }
+.tabs { display: flex; gap: 5px; margin-bottom: 20px; justify-content: center; flex-wrap: wrap; }
+.tabs button { padding: 8px 10px; border-radius: 12px; border: 2px solid var(--primary); background: white; cursor: pointer; font-weight: bold; font-size: 0.9rem; }
 .tabs button.active { background: var(--primary); color: white; }
+
 .install-tab { background: #2196F3 !important; color: white !important; border-color: #1976D2 !important; }
+.reset-btn { background: white !important; color: var(--danger) !important; border-color: var(--danger) !important; }
+.reset-btn:hover { background: var(--danger) !important; color: white !important; }
+
 .card { background: white; border-radius: 15px; padding: 15px; margin-bottom: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
 .section-header { display: flex; justify-content: space-between; align-items: center; }
 .exercise-row { display: flex; justify-content: space-between; margin: 10px 0; font-size: 1.3rem; }
@@ -15,10 +19,9 @@ input.correct { border-color: var(--primary); background: #E8F5E9; }
 input.incorrect { border-color: #F44336; background: #FFEBEE; }
 .hidden { display: none !important; }
 .items-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.store-item { background: white; padding: 15px; border-radius: 15px; text-align: center; }
-.buy-btn { width: 100%; background: var(--primary); color: white; border: none; padding: 8px; border-radius: 8px; cursor: pointer; }
+.store-item { background: white; padding: 15px; border-radius: 15px; text-align: center; border: 1px solid #eee; }
+.buy-btn { width: 100%; background: var(--primary); color: white; border: none; padding: 8px; border-radius: 8px; cursor: pointer; margin-top: 5px; }
 .buy-btn:disabled { background: #ccc; }
 
-/* עיצוב הודעת עדכון */
 #update-toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #333; color: white; padding: 12px 20px; border-radius: 50px; display: flex; gap: 10px; z-index: 1000; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
 #update-toast button { background: var(--secondary); border: none; color: white; padding: 4px 10px; border-radius: 15px; cursor: pointer; }
