@@ -3,8 +3,9 @@ document.addEventListener('DOMContentLoaded', () => {
     let myItems = JSON.parse(localStorage.getItem('math_items')) || [];
     let deferredPrompt;
 
+    // רישום Service Worker
     if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('sw.js');
+        navigator.serviceWorker.register('./sw.js').catch(err => console.log(err));
     }
 
     const scoreEl = document.getElementById('score');
@@ -15,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('math_coins', score);
     };
 
-    // לוגיקת התקנה
+    // זיהוי אפשרות התקנה
     window.addEventListener('beforeinstallprompt', (e) => {
         e.preventDefault();
         deferredPrompt = e;
@@ -31,6 +32,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // הסתרת כפתור אם כבר הותקן
+    window.addEventListener('appinstalled', () => {
+        installBtn.classList.add('hidden');
+        console.log('PWA installed successfully');
+    });
+
+    // --- שאר הפונקציות (חנות ומשחק) נשארות כפי שהיו ---
     const storeItems = [
         { id: 1, name: '5 דקות משחק', price: 10, icon: '⏱️' },
         { id: 2, name: '10 דקות משחק', price: 20, icon: '⏲️' },
@@ -47,7 +55,6 @@ document.addEventListener('DOMContentLoaded', () => {
             let n1 = Math.floor(Math.random() * range) + 1;
             let n2 = Math.floor(Math.random() * range) + 1;
             if (type === 'subtraction' && n1 < n2) [n1, n2] = [n2, n1];
-            
             const ans = type === 'addition' ? n1 + n2 : n1 - n2;
             const div = document.createElement('div');
             div.className = 'exercise-row';
