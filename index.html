@@ -6,6 +6,10 @@
     <title>אלופי המתמטיקה - V1.0.0</title>
     <link rel="stylesheet" href="style.css">
     <link rel="manifest" href="manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="מתמטיקה">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/3021/3021845.png">
     <meta name="theme-color" content="#4CAF50">
 </head>
 <body>
@@ -47,9 +51,14 @@
         <main id="view-store" class="view hidden">
             <div class="store-header">
                 <h2>חנות הפרסים 🎁</h2>
-                <p>המירו מטבעות בזמן משחק!</p>
             </div>
             <div id="store-items" class="items-grid"></div>
+            
+            <div id="install-container" class="hidden">
+                <button id="install-btn" class="install-action-btn">
+                     התקן אפליקציה על הטלפון 📱
+                </button>
+            </div>
         </main>
 
         <main id="view-inventory" class="view hidden">
@@ -61,10 +70,5 @@
     </div>
 
     <script src="app.js"></script>
-    <script>
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('sw.js').then(() => console.log('SW Registered'));
-        }
-    </script>
 </body>
 </html>
