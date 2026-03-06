@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>אלופי המתמטיקה - V1.0.1</title>
-    <link rel="stylesheet" href="style.css?v=1.0.1">
+    <title>אלופי המתמטיקה - V1.0.2</title>
+    <link rel="stylesheet" href="style.css?v=1.0.2">
     <link rel="manifest" href="manifest.json">
     <link rel="icon" type="image/png" href="icon.PNG">
     <link rel="apple-touch-icon" href="icon.PNG">
@@ -30,17 +30,26 @@
         <main id="view-play" class="view active-view">
             <div class="exercise-section card">
                 <div class="section-header">
-                    <h3>חיבור ➕</h3>
-                    <button class="refresh-small" onclick="window.refreshTable('addition')">🔄</button>
+                    <h3>חיבור וחיסור ➕➖</h3>
+                    <div>
+                        <button class="refresh-small" onclick="window.refreshTable('addition')">➕</button>
+                        <button class="refresh-small" onclick="window.refreshTable('subtraction')">➖</button>
+                    </div>
                 </div>
                 <div id="addition-table" class="math-grid"></div>
+                <div id="subtraction-table" class="math-grid" style="margin-top:15px"></div>
             </div>
+
             <div class="exercise-section card">
                 <div class="section-header">
-                    <h3>חיסור ➖</h3>
-                    <button class="refresh-small" onclick="window.refreshTable('subtraction')">🔄</button>
+                    <h3>כפל וחילוק ✖️➗</h3>
+                    <div>
+                        <button class="refresh-small" onclick="window.refreshTable('multiplication')">✖️</button>
+                        <button class="refresh-small" onclick="window.refreshTable('division')">➗</button>
+                    </div>
                 </div>
-                <div id="subtraction-table" class="math-grid"></div>
+                <div id="multiplication-table" class="math-grid"></div>
+                <div id="division-table" class="math-grid" style="margin-top:15px"></div>
             </div>
         </main>
 
@@ -52,6 +61,6 @@
             <div id="my-items" class="items-grid"></div>
         </main>
     </div>
-    <script src="app.js?v=1.0.1"></script>
+    <script src="app.js?v=1.0.2"></script>
 </body>
 </html>
