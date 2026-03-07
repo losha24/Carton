@@ -1,7 +1,7 @@
 {
   "name": "אלופי המתמטיקה",
   "short_name": "מתמטיקה",
-  "description": "אפליקציית לימוד חשבון עם פרסים ושלבים",
+  "description": "לימוד חשבון עם פרסים ושלבים",
   "start_url": "index.html",
   "display": "standalone",
   "background_color": "#F0F7FF",
