@@ -1,4 +1,4 @@
-const CACHE_NAME = 'math-champions-v3.4.0';
+const CACHE_NAME = 'math-champions-v3.5.0';
 const ASSETS = [
   './',
   './index.html',
@@ -8,7 +8,7 @@ const ASSETS = [
   './icon.PNG'
 ];
 
-// התקנה ושמירת הקבצים בזיכרון המטמון (Cache)
+// התקנה ושמירת הקבצים בזיכרון המטמון
 self.addEventListener('install', (event) => {
   self.skipWaiting();
   event.waitUntil(
@@ -18,7 +18,7 @@ self.addEventListener('install', (event) => {
   );
 });
 
-// מחיקת גרסאות ישנות כדי שלא יתפסו מקום
+// ניקוי זיכרון ישן בעת עדכון גרסה
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((keys) => {
@@ -34,7 +34,7 @@ self.addEventListener('activate', (event) => {
   return self.clients.claim();
 });
 
-// שליפת הקבצים מהזיכרון במקום מהשרת (עובד בלי אינטרנט)
+// שליפת קבצים מהמטמון (מאפשר עבודה Offline)
 self.addEventListener('fetch', (event) => {
   event.respondWith(
     caches.match(event.request).then((response) => {
