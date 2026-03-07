@@ -1,19 +1,75 @@
-const CURRENT_VERSION = "2.1";
+const CURRENT_VERSION = "7.2.1";
 
-function checkVersion() {
+// בדיקת גרסה
+window.checkVersion = (isManual = false) => {
     const saved = localStorage.getItem('app_version');
     if (saved && saved !== CURRENT_VERSION) {
         document.getElementById('update-banner').classList.remove('hidden');
+    } else if (isManual) {
+        alert("הגרסה שלך מעודכנת! (7.2.1)");
     }
     localStorage.setItem('app_version', CURRENT_VERSION);
-}
+};
 
+// התקנה (PWA)
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    document.getElementById('install-btn').classList.remove('hidden');
+});
+
+document.getElementById('install-btn').onclick = async () => {
+    if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        if (outcome === 'accepted') document.getElementById('install-btn').classList.add('hidden');
+        deferredPrompt = null;
+    }
+};
+
+// יצירת תרגילים (מספר גדול ראשון, אין שליליים)
+window.refreshTable = (type) => {
+    const container = document.getElementById(`${type}-table`);
+    if (!container) return; container.innerHTML = '';
+    const score = parseInt(localStorage.getItem('math_coins')) || 0;
+    const range = score < 50 ? 10 : 20;
+
+    for (let i = 0; i < 3; i++) {
+        let n1, n2, ans, sym;
+        if (type === 'addition') {
+            let a = Math.floor(Math.random()*range)+1, b = Math.floor(Math.random()*range)+1;
+            n1 = Math.max(a,b); n2 = Math.min(a,b); ans = n1+n2; sym = '+';
+        } else if (type === 'subtraction') {
+            n1 = Math.floor(Math.random()*range)+5;
+            n2 = Math.floor(Math.random()*n1);
+            ans = n1-n2; sym = '-';
+        } else if (type === 'multiplication') {
+            n1 = Math.floor(Math.random()*9)+2; n2 = Math.floor(Math.random()*9)+2;
+            ans = n1*n2; sym = '×';
+        } else if (type === 'division') {
+            n2 = Math.floor(Math.random()*8)+2;
+            let res = Math.floor(Math.random()*9)+1;
+            n1 = n2 * res; ans = res; sym = '÷';
+        }
+        container.innerHTML += `<div class="exercise-row"><span>${n1} ${sym} ${n2} =</span><input type="number" data-ans="${ans}" data-type="${type}"></div>`;
+    }
+};
+
+// קיפול כותרות
+window.toggleSection = (id) => {
+    const el = document.getElementById(id);
+    el.classList.toggle('collapsed');
+    const icon = el.previousElementSibling.querySelector('.toggle-icon');
+    icon.innerText = el.classList.contains('collapsed') ? '◀' : '▼';
+};
+
+// חנות וניהול
 const getDefaultItems = () => [
-    { id: 'd1', name: '10 דקות משחק', price: 15, icon: '⏱️' },
-    { id: 'd2', name: '20 דקות משחק', price: 25, icon: '⏲️' },
-    { id: 'd3', name: '30 דקות משחק', price: 40, icon: '📱' },
-    { id: 'd4', name: 'שעה מחשב', price: 70, icon: '🎮' },
-    { id: 'd5', name: 'גלידה', price: 50, icon: '🍦' }
+    { id: 'd1', name: '10 דק טלפון', price: 15, icon: '📱' },
+    { id: 'd2', name: '20 דק משחק', price: 25, icon: '🎮' },
+    { id: 'd3', name: 'גלידה', price: 50, icon: '🍦' },
+    { id: 'd4', name: 'הפתעה', price: 100, icon: '🎁' }
 ];
 
 window.toggleAdmin = () => document.getElementById('admin-panel').classList.toggle('hidden');
@@ -26,8 +82,6 @@ window.addNewItem = () => {
     let custom = JSON.parse(localStorage.getItem('math_custom_store')) || [];
     custom.push({ id: "c" + Date.now(), name, price, icon });
     localStorage.setItem('math_custom_store', JSON.stringify(custom));
-    document.getElementById('new-item-name').value = '';
-    document.getElementById('new-item-price').value = '';
     renderStore();
 };
 
@@ -40,32 +94,8 @@ window.buy = (id) => {
         let my = JSON.parse(localStorage.getItem('math_items')) || [];
         my.push({...item, date: new Date().toLocaleDateString('he-IL')});
         localStorage.setItem('math_items', JSON.stringify(my));
-        updateUI(); renderStore(); alert("תתחדש! הפרס באוסף שלך.");
-    } else alert("חסרים לך מטבעות!");
-};
-
-window.refreshTable = (type) => {
-    const container = document.getElementById(`${type}-table`);
-    if (!container) return; container.innerHTML = '';
-    const range = (parseInt(localStorage.getItem('math_coins')) || 0) < 50 ? 10 : 20;
-    for (let i = 0; i < 3; i++) {
-        let n1, n2, ans, sym;
-        if (type === 'addition') {
-            let a = Math.floor(Math.random()*range)+1, b = Math.floor(Math.random()*range)+1;
-            n1 = Math.max(a,b); n2 = Math.min(a,b); ans = n1+n2; sym = '+';
-        } else if (type === 'subtraction') {
-            let a = Math.floor(Math.random()*range)+5;
-            let b = Math.floor(Math.random()*a)+1;
-            n1 = a; n2 = b; ans = n1-n2; sym = '-';
-        } else if (type === 'multiplication') {
-            n1 = Math.floor(Math.random()*9)+2; n2 = Math.floor(Math.random()*9)+2;
-            ans = n1*n2; sym = '×';
-        } else if (type === 'division') {
-            n2 = Math.floor(Math.random()*8)+2; let r = Math.floor(Math.random()*9)+1;
-            n1 = n2*r; ans = r; sym = '÷';
-        }
-        container.innerHTML += `<div class="exercise-row"><span>${n1} ${sym} ${n2} =</span><input type="number" data-ans="${ans}" data-type="${type}"></div>`;
-    }
+        updateUI(); renderStore(); alert("תתחדש!");
+    } else alert("אין מספיק מטבעות!");
 };
 
 const updateUI = () => {
@@ -80,15 +110,8 @@ const renderStore = () => {
     const all = [...getDefaultItems(), ...custom];
     document.getElementById('store-items').innerHTML = all.map(i => `
         <div class="store-item"><div>${i.icon}</div><b>${i.name}</b><div>${i.price} 🪙</div>
-        <button class="buy-btn" ${s < i.price ? 'disabled' : ''} onclick="buy('${i.id}')">קנה</button>
-        ${String(i.id).startsWith('c') ? `<button onclick="window.deleteItem('${i.id}')" style="background:none;border:none;color:red;font-size:0.7rem;cursor:pointer;margin-top:5px">מחק 🗑️</button>` : ''}</div>
+        <button class="buy-btn" ${s < i.price ? 'disabled' : ''} onclick="buy('${i.id}')">קנה</button></div>
     `).join('');
-};
-
-window.deleteItem = (id) => {
-    let items = JSON.parse(localStorage.getItem('math_custom_store')) || [];
-    localStorage.setItem('math_custom_store', JSON.stringify(items.filter(i => i.id != id)));
-    renderStore();
 };
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -108,7 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     });
-    document.querySelectorAll('.tabs button:not(.reset-btn)').forEach(btn => {
+    document.querySelectorAll('.tabs button:not(#refresh-btn):not(#install-btn)').forEach(btn => {
         btn.onclick = () => {
             document.querySelectorAll('.view').forEach(v => v.classList.add('hidden'));
             document.querySelectorAll('.tabs button').forEach(b => b.classList.remove('active'));
@@ -116,11 +139,11 @@ document.addEventListener('DOMContentLoaded', () => {
             if(btn.id === 'tab-store') renderStore();
             if(btn.id === 'tab-inventory') {
                 const my = JSON.parse(localStorage.getItem('math_items')) || [];
-                document.getElementById('my-items').innerHTML = my.map(i => `<div class="store-item"><div>${i.icon}</div><b>${i.name}</b><div style="font-size:0.7rem">${i.date}</div></div>`).join('');
+                document.getElementById('my-items').innerHTML = my.map(i => `<div class="store-item"><div>${i.icon}</div><b>${i.name}</b><small>${i.date}</small></div>`).join('');
             }
         };
     });
     document.getElementById('reset-game-btn').onclick = () => { if(confirm("לאפס הכל?")) { localStorage.clear(); location.reload(); } };
-    ['addition', 'subtraction', 'multiplication', 'division'].forEach(t => window.refreshTable(t));
+    ['addition', 'subtraction', 'multiplication', 'division'].forEach(t => refreshTable(t));
     updateUI();
 });
