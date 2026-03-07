@@ -1,4 +1,4 @@
-const CACHE_NAME = 'math-pro-v1.1.2'; // שינוי הגרסה מכריח את הדפדפן להתעדכן
+const CACHE_NAME = 'math-pro-v1.1.3'; // שינוי הגרסה מכריח את הדפדפן להתעדכן
 const ASSETS = [
   './',
   './index.html',
