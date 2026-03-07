@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>אלופי המתמטיקה - 3.5.0</title>
-    <link rel="stylesheet" href="style.css?v=3.5.0">
+    <title>אלופי המתמטיקה - 3.5.1</title>
+    <link rel="stylesheet" href="style.css?v=3.5.1">
     <link rel="manifest" href="manifest.json">
     <link rel="icon" type="image/png" href="icon.PNG">
 </head>
@@ -73,9 +73,37 @@
                     <button onclick="window.toggleAdmin()" class="admin-toggle-btn">⚙️ ניהול הורים (הוספה ומחיקה)</button>
                     <div id="admin-panel" class="admin-content hidden">
                         <div class="admin-form">
-                            <input type="text" id="new-item-name" placeholder="שם הפרס">
-                            <input type="number" id="new-item-price" placeholder="מחיר">
-                            <button onclick="window.addNewItem()" class="add-item-btn">הוסף לחנות ✨</button>
+                            <input type="text" id="new-item-name" placeholder="שם הפרס (למשל: פיצה)">
+                            <input type="number" id="new-item-price" placeholder="מחיר במטבעות">
+                            <div class="icon-selector-label">בחר אייקון:</div>
+                            <select id="new-item-icon" class="admin-select">
+                                <optgroup label="אוכל וממתקים">
+                                    <option value="🍕">🍕 פיצה</option>
+                                    <option value="🍦">🍦 גלידה</option>
+                                    <option value="🍭">🍭 ממתק</option>
+                                    <option value="🍿">🍿 פופקורן</option>
+                                    <option value="🍔">🍔 המבורגר</option>
+                                    <option value="🍩">🍩 דונאט</option>
+                                    <option value="🍫">🍫 שוקולד</option>
+                                </optgroup>
+                                <optgroup label="פנאי ומשחקים">
+                                    <option value="🎮">🎮 משחק מחשב</option>
+                                    <option value="📱">📱 זמן מסך</option>
+                                    <option value="🧸">🧸 בובה/צעצוע</option>
+                                    <option value="⚽">⚽ כדורגל</option>
+                                    <option value="🎨">🎨 יצירה</option>
+                                    <option value="🚲">🚲 רכיבה באופניים</option>
+                                    <option value="🏰">🏰 פארק שעשועים</option>
+                                </optgroup>
+                                <optgroup label="אחר">
+                                    <option value="🎁">🎁 מתנה בהפתעה</option>
+                                    <option value="⭐">⭐ כוכב</option>
+                                    <option value="🎬">🎬 סרט</option>
+                                    <option value="🎈">🎈 מסיבה</option>
+                                    <option value="🐶">🐶 ליטוף כלב</option>
+                                </optgroup>
+                            </select>
+                            <button onclick="window.addNewItem()" class="add-item-btn">שמור פרס בחנות ✨</button>
                         </div>
                         <hr>
                         <div id="admin-manage-list"></div>
@@ -94,6 +122,6 @@
         </footer>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
-    <script src="app.js?v=3.5.0"></script>
+    <script src="app.js?v=3.5.1"></script>
 </body>
 </html>
