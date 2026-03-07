@@ -2,70 +2,41 @@
     --primary: #4CAF50;
     --error: #f44336;
     --bg: #F0F7FF;
-    --title-color: #1a365d;
 }
 
-body, html { 
-    height: 100%; margin: 0; padding: 0; 
-    overflow: hidden; font-family: system-ui, sans-serif; 
-    background: var(--bg); direction: rtl; 
-}
+body, html { height: 100%; margin: 0; padding: 0; overflow: hidden; font-family: system-ui, sans-serif; background: var(--bg); direction: rtl; }
+.app-container { display: flex; flex-direction: column; height: 100vh; max-width: 450px; margin: auto; padding: 10px; box-sizing: border-box; }
 
-.app-container { 
-    display: flex; flex-direction: column; height: 100vh; 
-    max-width: 450px; margin: auto; padding: 10px; box-sizing: border-box; 
-}
+.main-title { text-align: center; color: #1a365d; font-size: 1.6rem; margin: 8px 0; }
 
-.main-title {
-    text-align: center; color: var(--title-color);
-    font-size: 1.8rem; margin: 10px 0;
-    text-shadow: 1px 1px 0px white, 2px 2px 4px rgba(0,0,0,0.1);
-}
+.scroll-area { flex: 1; overflow-y: auto; padding-bottom: 20px; }
 
-/* אזור גלילה תקין */
-.scroll-area { 
-    flex: 1; overflow-y: auto; 
-    -webkit-overflow-scrolling: touch; 
-    padding-bottom: 20px;
-}
+/* כותרת סקציה עם כפתור ממול */
+.section-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 5px; margin-bottom: 10px; }
+.clickable-area { display: flex; align-items: center; cursor: pointer; flex: 1; }
+.clickable-area h3 { margin: 0 10px; font-size: 1.1rem; }
+.mini-refresh { background: #edf2f7; border: 1px solid #cbd5e0; border-radius: 8px; padding: 5px 10px; font-size: 1.2rem; cursor: pointer; }
 
-/* כרטיסיות רמה וכסף */
-.stats-container { display: flex; gap: 8px; margin-bottom: 10px; }
+/* קיפול */
+.collapsible-content { display: block; overflow: hidden; transition: all 0.3s ease; }
+.collapsible-content.collapsed { display: none; }
+
+/* חנות */
+.items-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.store-item { background: white; padding: 12px; border-radius: 15px; text-align: center; border: 1px solid #edf2f7; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+
+/* רענון וסטטיסטיקה */
 .stat-card { flex: 1; background: white; padding: 8px; border-radius: 12px; text-align: center; border-bottom: 4px solid #ddd; }
 .stat-card.level { border-color: var(--primary); }
 .stat-card.coins { border-color: #FFD700; }
 
-/* טאבים - התאמה למילים ארוכות */
-.tabs { display: flex; gap: 4px; margin-bottom: 15px; }
-.tabs button { 
-    flex: 1; padding: 10px 2px; border-radius: 10px; 
-    border: 2px solid var(--primary); background: white; 
-    font-weight: bold; font-size: 0.75rem; cursor: pointer;
-}
+.tabs button { flex: 1; padding: 8px 2px; border-radius: 10px; border: 2px solid var(--primary); background: white; font-weight: bold; font-size: 0.75rem; }
 .tabs button.active { background: var(--primary); color: white; }
 .reset-tab-btn { border-color: var(--error) !important; color: var(--error); }
 
-/* תרגילים ומשוב */
-.exercise-row { display: flex; justify-content: space-between; align-items: center; padding: 10px; background: white; border-radius: 12px; margin-bottom: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-input[type="number"] { width: 65px; text-align: center; border: 2px solid #cbd5e0; border-radius: 8px; padding: 8px; font-size: 1.1rem; transition: all 0.2s; }
-
-/* עיצוב לתשובה שגויה */
 input.wrong { border-color: var(--error); background: #fee2e2; animation: shake 0.3s; }
-@keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    25% { transform: translateX(-4px); }
-    75% { transform: translateX(4px); }
-}
-
+@keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
 input.correct { border-color: var(--primary); background: #f0fdf4; pointer-events: none; }
 
-/* חנות */
-.items-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.store-item { background: white; padding: 12px; border-radius: 15px; text-align: center; border: 1px solid #edf2f7; }
-
-/* פס התקדמות */
-.progress-container { background: #e2e8f0; height: 16px; border-radius: 10px; overflow: hidden; margin: 10px 0; }
-.progress-fill { background: linear-gradient(90deg, #4CAF50, #8BC34A); width: 0%; height: 100%; transition: width 0.3s; }
-
+footer { text-align: center; font-size: 0.8rem; color: #a0aec0; padding: 15px 0; margin-top: auto; }
 .hidden { display: none !important; }
-footer { text-align: center; font-size: 0.75rem; color: #a0aec0; padding: 10px 0; }
