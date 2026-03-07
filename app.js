@@ -1,21 +1,18 @@
-const CURRENT_VERSION = "7.2.1";
+const CURRENT_VERSION = "7.2.2";
 
 // בדיקת גרסה
 window.checkVersion = (isManual = false) => {
     const saved = localStorage.getItem('app_version');
     if (saved && saved !== CURRENT_VERSION) {
         document.getElementById('update-banner').classList.remove('hidden');
-    } else if (isManual) {
-        alert("הגרסה שלך מעודכנת! (7.2.1)");
-    }
+    } else if (isManual) { alert("הגרסה שלך מעודכנת! (7.2.2)"); }
     localStorage.setItem('app_version', CURRENT_VERSION);
 };
 
 // התקנה (PWA)
 let deferredPrompt;
 window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
+    e.preventDefault(); deferredPrompt = e;
     document.getElementById('install-btn').classList.remove('hidden');
 });
 
@@ -28,7 +25,7 @@ document.getElementById('install-btn').onclick = async () => {
     }
 };
 
-// יצירת תרגילים (מספר גדול ראשון, אין שליליים)
+// תרגילים
 window.refreshTable = (type) => {
     const container = document.getElementById(`${type}-table`);
     if (!container) return; container.innerHTML = '';
@@ -56,20 +53,19 @@ window.refreshTable = (type) => {
     }
 };
 
-// קיפול כותרות
+// קיפול
 window.toggleSection = (id) => {
     const el = document.getElementById(id);
     el.classList.toggle('collapsed');
     const icon = el.previousElementSibling.querySelector('.toggle-icon');
-    icon.innerText = el.classList.contains('collapsed') ? '◀' : '▼';
+    if(icon) icon.innerText = el.classList.contains('collapsed') ? '◀' : '▼';
 };
 
-// חנות וניהול
+// חנות
 const getDefaultItems = () => [
     { id: 'd1', name: '10 דק טלפון', price: 15, icon: '📱' },
     { id: 'd2', name: '20 דק משחק', price: 25, icon: '🎮' },
-    { id: 'd3', name: 'גלידה', price: 50, icon: '🍦' },
-    { id: 'd4', name: 'הפתעה', price: 100, icon: '🎁' }
+    { id: 'd3', name: 'גלידה', price: 50, icon: '🍦' }
 ];
 
 window.toggleAdmin = () => document.getElementById('admin-panel').classList.toggle('hidden');
@@ -85,7 +81,7 @@ window.addNewItem = () => {
     renderStore();
 };
 
-window.buy = (id) => {
+window.buyItem = (id) => {
     let s = parseInt(localStorage.getItem('math_coins')) || 0;
     const all = [...getDefaultItems(), ...(JSON.parse(localStorage.getItem('math_custom_store')) || [])];
     const item = all.find(i => i.id == id);
@@ -95,7 +91,7 @@ window.buy = (id) => {
         my.push({...item, date: new Date().toLocaleDateString('he-IL')});
         localStorage.setItem('math_items', JSON.stringify(my));
         updateUI(); renderStore(); alert("תתחדש!");
-    } else alert("אין מספיק מטבעות!");
+    } else { alert("אין מספיק מטבעות!"); }
 };
 
 const updateUI = () => {
@@ -108,9 +104,11 @@ const renderStore = () => {
     const s = parseInt(localStorage.getItem('math_coins')) || 0;
     const custom = JSON.parse(localStorage.getItem('math_custom_store')) || [];
     const all = [...getDefaultItems(), ...custom];
-    document.getElementById('store-items').innerHTML = all.map(i => `
+    const container = document.getElementById('store-items');
+    if (!container) return;
+    container.innerHTML = all.map(i => `
         <div class="store-item"><div>${i.icon}</div><b>${i.name}</b><div>${i.price} 🪙</div>
-        <button class="buy-btn" ${s < i.price ? 'disabled' : ''} onclick="buy('${i.id}')">קנה</button></div>
+        <button class="buy-btn" ${s < i.price ? 'disabled' : ''} onclick="window.buyItem('${i.id}')">קנה</button></div>
     `).join('');
 };
 
@@ -131,11 +129,14 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     });
-    document.querySelectorAll('.tabs button:not(#refresh-btn):not(#install-btn)').forEach(btn => {
+    
+    document.querySelectorAll('.tabs button:not(#refresh-btn):not(#install-btn):not(#reset-game-btn)').forEach(btn => {
         btn.onclick = () => {
             document.querySelectorAll('.view').forEach(v => v.classList.add('hidden'));
             document.querySelectorAll('.tabs button').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active'); document.getElementById(`view-${btn.id.split('-')[1]}`).classList.remove('hidden');
+            btn.classList.add('active'); 
+            const viewId = `view-${btn.id.split('-')[1]}`;
+            document.getElementById(viewId).classList.remove('hidden');
             if(btn.id === 'tab-store') renderStore();
             if(btn.id === 'tab-inventory') {
                 const my = JSON.parse(localStorage.getItem('math_items')) || [];
@@ -143,7 +144,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         };
     });
-    document.getElementById('reset-game-btn').onclick = () => { if(confirm("לאפס הכל?")) { localStorage.clear(); location.reload(); } };
+
+    document.getElementById('reset-game-btn').onclick = () => { if(confirm("לאפס את כל ההתקדמות והמטבעות?")) { localStorage.clear(); location.reload(); } };
     ['addition', 'subtraction', 'multiplication', 'division'].forEach(t => refreshTable(t));
     updateUI();
 });
