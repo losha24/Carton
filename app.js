@@ -1,11 +1,13 @@
-const CURRENT_VERSION = "3.5.1";
+const CURRENT_VERSION = "3.5.5";
 
-// --- ניהול תצוגה וגרסה ---
-window.checkVersion = (manual) => {
-    if(manual) alert("גרסה 3.5.1 מעודכנת ✅");
-    localStorage.setItem('app_version', CURRENT_VERSION);
+const state = {
+    coins: parseInt(localStorage.getItem('math_coins')) || 0,
+    solvedToday: 0,
+    inventory: JSON.parse(localStorage.getItem('math_items')) || [],
+    customStore: JSON.parse(localStorage.getItem('math_custom_store')) || []
 };
 
+// פתיחה וסגירה של סקציות
 window.toggleSection = (id) => {
     const el = document.getElementById(id);
     const icon = document.getElementById('icon-' + id.split('-')[1]);
@@ -15,93 +17,71 @@ window.toggleSection = (id) => {
 
 window.toggleAdmin = () => document.getElementById('admin-panel').classList.toggle('hidden');
 
-// --- חנות וניהול הורים ---
+// חנות וניהול
 const defaultItems = [
     { id: 'd1', name: '10 דק טלפון', price: 15, icon: '📱' },
-    { id: 'd2', name: '20 דק משחק', price: 25, icon: '🎮' },
-    { id: 'd3', name: 'גלידה', price: 40, icon: '🍦' },
-    { id: 'd4', name: 'ממתק', price: 10, icon: '🍭' },
-    { id: 'd5', name: 'סרט', price: 60, icon: '🍿' },
-    { id: 'd6', name: 'הפתעה', price: 100, icon: '🎁' }
+    { id: 'd2', name: 'גלידה', price: 40, icon: '🍦' },
+    { id: 'd3', name: 'ממתק', price: 10, icon: '🍭' },
+    { id: 'd4', name: 'סרט', price: 60, icon: '🍿' }
 ];
-
-const getItems = () => [...defaultItems, ...(JSON.parse(localStorage.getItem('math_custom_store')) || [])];
 
 window.addNewItem = () => {
     const name = document.getElementById('new-item-name').value;
     const price = parseInt(document.getElementById('new-item-price').value);
     const icon = document.getElementById('new-item-icon').value;
-    
-    if (!name || isNaN(price) || price <= 0) {
-        alert("נא להזין שם תקין ומחיר מעל 0");
-        return;
-    }
-    
-    let custom = JSON.parse(localStorage.getItem('math_custom_store')) || [];
-    custom.push({ id: 'c' + Date.now(), name, price, icon });
-    localStorage.setItem('math_custom_store', JSON.stringify(custom));
-    
-    // איפוס שדות
+    if (!name || isNaN(price) || price <= 0) return alert("נא להזין פרטים תקינים");
+    state.customStore.push({ id: 'c' + Date.now(), name, price, icon });
+    localStorage.setItem('math_custom_store', JSON.stringify(state.customStore));
     document.getElementById('new-item-name').value = '';
     document.getElementById('new-item-price').value = '';
-    
     renderStore(); renderAdminList();
-    alert("הפרס נוסף בהצלחה!");
 };
 
 window.deleteItem = (id) => {
-    if(!confirm("למחוק את הפרס הזה?")) return;
-    let custom = JSON.parse(localStorage.getItem('math_custom_store')) || [];
-    custom = custom.filter(i => i.id !== id);
-    localStorage.setItem('math_custom_store', JSON.stringify(custom));
+    state.customStore = state.customStore.filter(i => i.id !== id);
+    localStorage.setItem('math_custom_store', JSON.stringify(state.customStore));
     renderStore(); renderAdminList();
 };
 
 const renderAdminList = () => {
-    const custom = JSON.parse(localStorage.getItem('math_custom_store')) || [];
     const container = document.getElementById('admin-manage-list');
-    if(!container) return;
-    container.innerHTML = custom.length ? '<b>פרסים שהוספת:</b>' + custom.map(i => `
-        <div class="manage-item-row"><span>${i.icon} ${i.name}</span><button class="del-btn" onclick="deleteItem('${i.id}')">מחק 🗑️</button></div>
-    `).join('') : '<p>אין פרסים אישיים ברשימה.</p>';
+    container.innerHTML = state.customStore.map(i => `
+        <div class="manage-item-row"><span>${i.icon} ${i.name}</span><button class="del-btn" onclick="deleteItem('${i.id}')">מחק</button></div>
+    `).join('');
 };
 
 const renderStore = () => {
-    const coins = parseInt(localStorage.getItem('math_coins')) || 0;
     const container = document.getElementById('store-items');
-    if(!container) return;
-    container.innerHTML = getItems().map(i => `
+    const allItems = [...defaultItems, ...state.customStore];
+    container.innerHTML = allItems.map(i => `
         <div class="store-item">
-            <div style="font-size:2.5rem; margin-bottom:5px;">${i.icon}</div>
+            <div style="font-size:2.5rem; margin-bottom:5px">${i.icon}</div>
             <b style="font-size:1.1rem">${i.name}</b><br>
-            <span style="color:#2d3748; font-weight:bold;">${i.price} 🪙</span>
-            <button class="buy-btn" ${coins < i.price ? 'disabled' : ''} onclick="buyItem('${i.id}')">קנה</button>
+            <span style="font-weight:bold">${i.price} 🪙</span>
+            <button class="buy-btn" ${state.coins < i.price ? 'disabled' : ''} onclick="buyItem('${i.id}')">קנה</button>
         </div>
     `).join('');
 };
 
 window.buyItem = (id) => {
-    let coins = parseInt(localStorage.getItem('math_coins')) || 0;
-    const item = getItems().find(i => i.id === id);
-    if (coins >= item.price) {
-        coins -= item.price;
-        localStorage.setItem('math_coins', coins);
-        let my = JSON.parse(localStorage.getItem('math_items')) || [];
-        my.push({...item, date: new Date().toLocaleDateString('he-IL')});
-        localStorage.setItem('math_items', JSON.stringify(my));
-        updateUI(); renderStore(); alert(`תתחדש! קנית ${item.name} ${item.icon}`);
+    const allItems = [...defaultItems, ...state.customStore];
+    const item = allItems.find(i => i.id === id);
+    if (state.coins >= item.price) {
+        state.coins -= item.price;
+        state.inventory.push({...item, date: new Date().toLocaleDateString('he-IL')});
+        saveData(); updateUI(); renderStore();
+        alert(`תתחדש! קנית ${item.name} ${item.icon}`);
     }
 };
 
-// --- משחק ותרגילים ---
-let solvedCount = 0;
+// תרגילים
 window.refreshTable = (type) => {
     const container = document.getElementById(`${type}-table`);
     if (!container) return; container.innerHTML = '';
     for (let i = 0; i < 3; i++) {
         let n1, n2, ans, sym;
-        if (type === 'addition') { n1 = Math.floor(Math.random()*10)+1; n2 = Math.floor(Math.random()*10)+1; ans = n1+n2; sym = '+'; }
-        else if (type === 'subtraction') { n1 = Math.floor(Math.random()*10)+10; n2 = Math.floor(Math.random()*9)+1; ans = n1-n2; sym = '-'; }
+        if (type === 'addition') { n1 = Math.floor(Math.random()*15)+1; n2 = Math.floor(Math.random()*15)+1; ans = n1+n2; sym = '+'; }
+        else if (type === 'subtraction') { n1 = Math.floor(Math.random()*15)+10; n2 = Math.floor(Math.random()*14)+1; ans = n1-n2; sym = '-'; }
         else if (type === 'multiplication') { n1 = Math.floor(Math.random()*8)+2; n2 = Math.floor(Math.random()*8)+2; ans = n1*n2; sym = '×'; }
         else if (type === 'division') { n2 = Math.floor(Math.random()*7)+2; ans = Math.floor(Math.random()*8)+1; n1 = n2 * ans; sym = '÷'; }
         container.innerHTML += `<div class="exercise-row"><span>${n1} ${sym} ${n2} =</span><input type="number" data-ans="${ans}" data-type="${type}"></div>`;
@@ -109,9 +89,13 @@ window.refreshTable = (type) => {
 };
 
 const updateUI = () => {
-    const coins = parseInt(localStorage.getItem('math_coins')) || 0;
-    document.getElementById('score').innerText = coins;
-    document.getElementById('user-level').innerText = Math.floor(coins/50)+1;
+    document.getElementById('score').innerText = state.coins;
+    document.getElementById('user-level').innerText = Math.floor(state.coins/50)+1;
+};
+
+const saveData = () => {
+    localStorage.setItem('math_coins', state.coins);
+    localStorage.setItem('math_items', JSON.stringify(state.inventory));
 };
 
 document.body.addEventListener('change', (e) => {
@@ -119,14 +103,12 @@ document.body.addEventListener('change', (e) => {
         const input = e.target;
         if (parseInt(input.value) === parseInt(input.dataset.ans)) {
             input.classList.add('correct'); input.disabled = true;
-            let coins = parseInt(localStorage.getItem('math_coins')) || 0;
-            coins += (input.dataset.type === 'multiplication' || input.dataset.type === 'division') ? 3 : 1;
-            localStorage.setItem('math_coins', coins);
-            solvedCount++;
-            let prog = (solvedCount % 10) * 10 || 100;
+            state.coins += (input.dataset.type === 'multiplication' || input.dataset.type === 'division') ? 3 : 1;
+            state.solvedToday++;
+            let prog = (state.solvedToday % 10) * 10 || 100;
             document.getElementById('progress-bar').style.width = prog + '%';
-            if (solvedCount % 10 === 0) { confetti(); setTimeout(() => document.getElementById('progress-bar').style.width = '0%', 1500); }
-            updateUI();
+            if (state.solvedToday % 10 === 0) { confetti(); }
+            saveData(); updateUI();
         } else {
             input.classList.add('wrong');
             setTimeout(() => { input.classList.remove('wrong'); input.value = ''; }, 800);
@@ -137,20 +119,17 @@ document.body.addEventListener('change', (e) => {
 document.addEventListener('DOMContentLoaded', () => {
     updateUI();
     ['addition', 'subtraction', 'multiplication', 'division'].forEach(t => refreshTable(t));
-    
-    document.querySelectorAll('.tabs button:not(#refresh-btn):not(#reset-game-btn)').forEach(btn => {
+    document.querySelectorAll('.tabs button:not(.reset-tab-btn)').forEach(btn => {
         btn.onclick = () => {
             document.querySelectorAll('.view').forEach(v => v.classList.add('hidden'));
             document.querySelectorAll('.tabs button').forEach(b => b.classList.remove('active'));
             btn.classList.add('active'); 
-            const viewId = `view-${btn.id.split('-')[1]}`;
-            document.getElementById(viewId).classList.remove('hidden');
+            document.getElementById(`view-${btn.id.split('-')[1]}`).classList.remove('hidden');
             if(btn.id === 'tab-store') { renderStore(); renderAdminList(); }
             if(btn.id === 'tab-inventory') {
-                const my = JSON.parse(localStorage.getItem('math_items')) || [];
-                document.getElementById('my-items').innerHTML = my.length ? my.map(i => `<div class="store-item"><div>${i.icon}</div><b>${i.name}</b><br><small>${i.date}</small></div>`).join('') : '<p style="grid-column:1/3;text-align:center">האוסף שלך ריק</p>';
+                document.getElementById('my-items').innerHTML = state.inventory.map(i => `<div class="store-item"><div>${i.icon}</div><b>${i.name}</b><br><small>${i.date}</small></div>`).join('') || '<p style="grid-column:1/3;text-align:center">האוסף ריק</p>';
             }
         };
     });
-    document.getElementById('reset-game-btn').onclick = () => { if(confirm("למחוק הכל ולהתחיל מהתחלה?")) { localStorage.clear(); location.reload(); }};
+    document.getElementById('reset-game-btn').onclick = () => { if(confirm("לאפס הכל?")) { localStorage.clear(); location.reload(); }};
 });
