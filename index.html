@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>אלופי המתמטיקה - 3.2.0</title>
-    <link rel="stylesheet" href="style.css?v=3.2.0">
+    <title>אלופי המתמטיקה - 3.3.0</title>
+    <link rel="stylesheet" href="style.css?v=3.3.0">
     <link rel="manifest" href="manifest.json">
     <link rel="icon" type="image/png" href="icon.PNG">
 </head>
@@ -21,82 +21,81 @@
                     <span class="stat-value">🪙 <span id="score">0</span></span>
                 </div>
             </div>
-            <h1>אלופי המתמטיקה 🏆</h1>
+            <h1 class="main-title">אלופי המתמטיקה 🏆</h1>
         </header>
 
         <nav class="tabs">
             <button id="tab-play" class="active">🎮 משחק</button>
             <button id="tab-store">🎁 חנות</button>
             <button id="tab-inventory">🎒 אוסף</button>
-            <button onclick="window.checkVersion(true)" id="refresh-btn">🔄</button>
-            <button id="reset-game-btn" class="reset-tab-btn">🛑</button>
+            <button onclick="window.checkVersion(true)" id="refresh-btn">🔄 עדכן</button>
+            <button id="reset-game-btn" class="reset-tab-btn">🛑 איפוס</button>
         </nav>
 
-        <main id="view-play" class="view">
-            <div class="card summary-card">
-                <div class="progress-container"><div id="progress-bar" class="progress-fill"></div></div>
-                <p id="progress-text">עוד 10 תרגילים להפתעה! ✨</p>
-            </div>
-            
-            <section class="exercise-section card">
-                <div class="section-header clickable" onclick="window.toggleSection('section-basic')">
-                    <h3>חיבור וחיסור ➕➖</h3>
-                    <span class="toggle-icon">▼</span>
+        <div class="scroll-area">
+            <main id="view-play" class="view">
+                <div class="card summary-card">
+                    <div class="progress-container"><div id="progress-bar" class="progress-fill"></div></div>
+                    <p id="progress-text">עוד 10 תרגילים להפתעה! ✨</p>
                 </div>
-                <div id="section-basic" class="collapsible-content">
-                    <div id="addition-table" class="math-grid"></div>
-                    <div id="subtraction-table" class="math-grid" style="margin-top:10px"></div>
-                    <button class="refresh-section-btn" onclick="refreshTable('addition'); refreshTable('subtraction');">תרגילים חדשים 🎲</button>
-                </div>
-            </section>
+                
+                <section class="exercise-section card">
+                    <div class="section-header clickable" onclick="window.toggleSection('section-basic')">
+                        <h3>חיבור וחיסור ➕➖</h3>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div id="section-basic" class="collapsible-content">
+                        <div id="addition-table" class="math-grid"></div>
+                        <div id="subtraction-table" class="math-grid" style="margin-top:10px"></div>
+                        <button class="refresh-section-btn" onclick="refreshTable('addition'); refreshTable('subtraction');">תרגילים חדשים 🎲</button>
+                    </div>
+                </section>
 
-            <section class="exercise-section card">
-                <div class="section-header clickable" onclick="window.toggleSection('section-advanced')">
-                    <h3>כפל וחילוק ✖️➗</h3>
-                    <span class="toggle-icon">▼</span>
-                </div>
-                <div id="section-advanced" class="collapsible-content">
-                    <div id="multiplication-table" class="math-grid"></div>
-                    <div id="division-table" class="math-grid" style="margin-top:10px"></div>
-                    <button class="refresh-section-btn" onclick="refreshTable('multiplication'); refreshTable('division');">תרגילים חדשים 🎲</button>
-                </div>
-            </section>
-        </main>
+                <section class="exercise-section card">
+                    <div class="section-header clickable" onclick="window.toggleSection('section-advanced')">
+                        <h3>כפל וחילוק ✖️➗</h3>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div id="section-advanced" class="collapsible-content">
+                        <div id="multiplication-table" class="math-grid"></div>
+                        <div id="division-table" class="math-grid" style="margin-top:10px"></div>
+                        <button class="refresh-section-btn" onclick="refreshTable('multiplication'); refreshTable('division');">תרגילים חדשים 🎲</button>
+                    </div>
+                </section>
+            </main>
 
-        <main id="view-store" class="view hidden">
-            <div class="admin-box card">
-                <button onclick="window.toggleAdmin()" class="admin-toggle-btn">⚙️ הגדרות הורים (הוספה/מחיקה)</button>
-                <div id="admin-panel" class="admin-content hidden">
-                    <h4>הוספת פרס חדש</h4>
-                    <input type="text" id="new-item-name" placeholder="מה הפרס?">
-                    <input type="number" id="new-item-price" placeholder="מחיר במטבעות">
-                    <select id="new-item-icon">
-                        <option value="⚽">⚽ כדורגל</option>
-                        <option value="🍕">🍕 פיצה</option>
-                        <option value="🧸">🧸 בובה</option>
-                        <option value="🍿">🍿 סרט</option>
-                        <option value="🚲">🚲 אופניים</option>
-                        <option value="🍭">🍭 ממתק</option>
-                        <option value="🎮">🎮 משחק מחשב</option>
-                    </select>
-                    <button onclick="window.addNewItem()" class="add-item-btn">שמור פרס ✨</button>
-                    <hr>
-                    <h4>ניהול פרסים קיימים</h4>
-                    <div id="admin-manage-list"></div>
+            <main id="view-store" class="view hidden">
+                <div class="admin-box card">
+                    <button onclick="window.toggleAdmin()" class="admin-toggle-btn">⚙️ הגדרות הורים</button>
+                    <div id="admin-panel" class="admin-content hidden">
+                        <h4>הוספת פרס</h4>
+                        <input type="text" id="new-item-name" placeholder="שם הפרס">
+                        <input type="number" id="new-item-price" placeholder="מחיר">
+                        <select id="new-item-icon">
+                            <option value="⚽">⚽ כדורגל</option>
+                            <option value="🍕">🍕 פיצה</option>
+                            <option value="🍦">🍦 גלידה</option>
+                            <option value="🍿">🍿 סרט</option>
+                            <option value="🎮">🎮 משחק</option>
+                        </select>
+                        <button onclick="window.addNewItem()" class="add-item-btn">שמור בחנות</button>
+                        <hr>
+                        <div id="admin-manage-list"></div>
+                    </div>
                 </div>
-            </div>
-            <div id="store-items" class="items-grid"></div>
-        </main>
+                <div id="store-items" class="items-grid"></div>
+            </main>
 
-        <main id="view-inventory" class="view hidden">
-            <div id="my-items" class="items-grid"></div>
-        </main>
+            <main id="view-inventory" class="view hidden">
+                <div id="my-items" class="items-grid"></div>
+            </main>
+        </div>
 
         <footer>
             <p>© כל הזכויות שמורות - אלכסיי זבודיסקר</p>
         </footer>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
-    <script src="app.js?v=3.2.0"></script>
+    <script src="app.js?v=3.3.0"></script>
 </body>
 </html>
