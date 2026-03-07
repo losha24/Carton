@@ -1,16 +1,44 @@
-const CACHE_NAME = 'math-pro-v3.3.0';
-const ASSETS = ['./', './index.html', './style.css', './app.js', './manifest.json', './icon.PNG'];
+const CACHE_NAME = 'math-champions-v3.4.0';
+const ASSETS = [
+  './',
+  './index.html',
+  './style.css',
+  './app.js',
+  './manifest.json',
+  './icon.PNG'
+];
 
-self.addEventListener('install', (e) => { 
-    self.skipWaiting(); 
-    e.waitUntil(caches.open(CACHE_NAME).then((c) => c.addAll(ASSETS))); 
+// התקנה ושמירת הקבצים בזיכרון המטמון (Cache)
+self.addEventListener('install', (event) => {
+  self.skipWaiting();
+  event.waitUntil(
+    caches.open(CACHE_NAME).then((cache) => {
+      return cache.addAll(ASSETS);
+    })
+  );
 });
 
-self.addEventListener('activate', (e) => { 
-    e.waitUntil(caches.keys().then((ks) => Promise.all(ks.map((k) => k !== CACHE_NAME && caches.delete(k))))); 
-    return self.clients.claim(); 
+// מחיקת גרסאות ישנות כדי שלא יתפסו מקום
+self.addEventListener('activate', (event) => {
+  event.waitUntil(
+    caches.keys().then((keys) => {
+      return Promise.all(
+        keys.map((key) => {
+          if (key !== CACHE_NAME) {
+            return caches.delete(key);
+          }
+        })
+      );
+    })
+  );
+  return self.clients.claim();
 });
 
-self.addEventListener('fetch', (e) => { 
-    e.respondWith(fetch(e.request).catch(() => caches.match(e.request))); 
+// שליפת הקבצים מהזיכרון במקום מהשרת (עובד בלי אינטרנט)
+self.addEventListener('fetch', (event) => {
+  event.respondWith(
+    caches.match(event.request).then((response) => {
+      return response || fetch(event.request);
+    })
+  );
 });
