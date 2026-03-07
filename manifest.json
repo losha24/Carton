@@ -1,13 +1,22 @@
 {
-  "name": "אלופי המתמטיקה",
-  "short_name": "מתמטיקה",
-  "start_url": "index.html",
-  "display": "standalone",
-  "background_color": "#F0F7FF",
-  "theme_color": "#4CAF50",
-  "orientation": "portrait",
+  "short_name": "אלופי המתמטיקה",
+  "name": "אלופי המתמטיקה - גרסה 3.5.9",
   "icons": [
-    { "src": "icon.PNG", "sizes": "192x192", "type": "image/png" },
-    { "src": "icon.PNG", "sizes": "512x512", "type": "image/png" }
-  ]
+    {
+      "src": "icon.PNG",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon.PNG",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "./index.html",
+  "display": "standalone",
+  "theme_color": "#4CAF50",
+  "background_color": "#F0F7FF",
+  "dir": "rtl",
+  "lang": "he"
 }
