@@ -1,5 +1,6 @@
 /* =========================================
-   אלופי המתמטיקה PRO - עיצוב מאת אלכסיי זבודיסקר
+   אלופי המתמטיקה PRO - עיצוב מלא גרסה 2.0
+   עיצוב: אלכסיי זבודיסקר
    ========================================= */
 
 :root {
@@ -14,147 +15,137 @@
     --text-muted: #64748b;
     --border: #e2e8f0;
     --shadow: 0 4px 12px rgba(0,0,0,0.08);
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* הגדרות בסיס */
+/* הגדרות יסוד */
 * {
     box-sizing: border-box;
     -webkit-tap-highlight-color: transparent;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
 }
 
 body {
     background: var(--bg);
-    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
     margin: 0;
     padding: 10px;
     direction: rtl;
     color: var(--text-main);
-    line-height: 1.5;
+    line-height: 1.6;
+    overflow-x: hidden;
 }
 
 .app-container {
     width: 100%;
     max-width: 500px;
-    margin: auto;
-    padding-bottom: 40px;
+    margin: 0 auto;
+    padding-bottom: 100px; /* רווח לבר העדכון הצהוב */
 }
 
-/* כותרת עליונה */
+/* כותרת עליונה ומדדים */
 header {
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
+    padding-top: 10px;
 }
 
 .top-bar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
 }
 
 .level-badge {
-    background: var(--primary);
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
     color: white;
-    padding: 8px 18px;
-    border-radius: 25px;
-    font-weight: bold;
-    font-size: 0.9rem;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 10px 20px;
+    border-radius: 30px;
+    font-weight: 800;
+    font-size: 1rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
 .score-display {
-    background: var(--gold);
-    padding: 8px 18px;
-    border-radius: 25px;
-    font-weight: bold;
-    font-size: 1.3rem;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+    background: white;
+    border: 3px solid var(--gold);
+    padding: 8px 20px;
+    border-radius: 30px;
+    font-weight: 900;
+    font-size: 1.4rem;
+    color: #b8860b;
+    box-shadow: 0 4px 10px rgba(255, 215, 0, 0.2);
 }
 
 h1 {
-    font-size: 1.8rem;
-    margin: 10px 0;
+    font-size: 2rem;
+    margin: 15px 0;
     color: #2c3e50;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
+    letter-spacing: -1px;
 }
 
-/* טאבים לניווט */
+/* מערכת טאבים */
 .tabs {
     display: flex;
-    gap: 8px;
-    margin-bottom: 20px;
-    overflow-x: auto;
+    gap: 10px;
+    margin-bottom: 25px;
     padding: 5px;
-    scrollbar-width: none;
-}
-
-.tabs::-webkit-scrollbar {
-    display: none;
+    background: rgba(255,255,255,0.5);
+    border-radius: 20px;
 }
 
 .tabs button {
     flex: 1;
-    padding: 12px 10px;
-    border-radius: 15px;
-    border: 2px solid var(--primary);
+    padding: 14px 10px;
+    border-radius: 16px;
+    border: none;
     background: white;
     cursor: pointer;
-    font-weight: bold;
-    font-size: 0.95rem;
-    transition: all 0.2s ease;
-    white-space: nowrap;
-    color: var(--primary);
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--text-muted);
+    transition: var(--transition);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
 .tabs button.active {
     background: var(--primary);
     color: white;
-    box-shadow: 0 4px 10px rgba(76, 175, 80, 0.3);
-    transform: translateY(-2px);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(76, 175, 80, 0.3);
 }
 
 .reset-btn {
-    border-color: var(--danger) !important;
+    border: 2px solid var(--danger) !important;
     color: var(--danger) !important;
+    background: transparent !important;
 }
 
-.reset-btn:hover {
-    background: var(--danger) !important;
-    color: white !important;
-}
-
-/* כרטיסיות ותוכן */
+/* כרטיסיות */
 .card {
     background: var(--card-bg);
-    border-radius: 22px;
-    padding: 20px;
-    margin-bottom: 18px;
+    border-radius: 24px;
+    padding: 24px;
+    margin-bottom: 20px;
     box-shadow: var(--shadow);
+    border: 1px solid rgba(255,255,255,0.8);
 }
 
 /* מד התקדמות */
 .progress-container {
     background: #e2e8f0;
-    height: 18px;
-    border-radius: 10px;
+    height: 20px;
+    border-radius: 12px;
     overflow: hidden;
-    margin-bottom: 10px;
-    border: 1px solid #ddd;
+    margin-bottom: 12px;
+    border: 1px solid #cbd5e0;
 }
 
 .progress-fill {
-    background: linear-gradient(90deg, #4CAF50, #8BC34A);
+    background: linear-gradient(90deg, #4CAF50, #8BC34A, #CDDC39);
     width: 0%;
     height: 100%;
-    transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-#progress-text {
-    text-align: center;
-    font-size: 0.9rem;
-    font-weight: bold;
-    color: var(--text-muted);
-    margin: 0;
+    transition: width 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 /* תרגילים */
@@ -162,75 +153,52 @@ h1 {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 15px;
-    border-bottom: 2px solid #f8fafc;
-    padding-bottom: 10px;
-}
-
-.section-header h3 {
-    margin: 0;
-    font-size: 1.15rem;
-    color: #34495e;
-}
-
-.btn-group button {
-    padding: 8px 14px;
-    border-radius: 12px;
-    border: 1px solid #e2e8f0;
-    background: #fff;
-    font-size: 1.2rem;
-    cursor: pointer;
-    transition: 0.2s;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-}
-
-.btn-group button:active {
-    background: #f0f0f0;
-    transform: scale(0.92);
+    margin-bottom: 20px;
 }
 
 .math-grid {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 15px;
 }
 
 .exercise-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 12px 18px;
+    padding: 15px 20px;
     background: #f8fafc;
-    border-radius: 15px;
-    border: 1px solid #edf2f7;
-    transition: 0.3s;
+    border-radius: 18px;
+    border: 2px solid transparent;
+    transition: var(--transition);
 }
 
 .exercise-row:hover {
     border-color: var(--primary);
-    background: #fff;
+    background: white;
 }
 
 .exercise-row span {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #2d3748;
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: #334155;
 }
 
 input[type="number"] {
-    width: 85px;
+    width: 95px;
     text-align: center;
     border: 3px solid #cbd5e0;
-    border-radius: 14px;
-    padding: 10px;
-    font-size: 1.3rem;
+    border-radius: 16px;
+    padding: 12px;
+    font-size: 1.5rem;
+    font-weight: 700;
     outline: none;
-    transition: all 0.3s ease;
+    transition: var(--transition);
 }
 
 input:focus {
     border-color: var(--secondary);
-    box-shadow: 0 0 8px rgba(255, 152, 0, 0.2);
+    box-shadow: 0 0 0 4px rgba(255, 152, 0, 0.1);
 }
 
 input.correct {
@@ -253,29 +221,25 @@ input.incorrect {
     40%, 60% { transform: translate3d(4px, 0, 0); }
 }
 
-/* חנות ופרסים */
+/* חנות */
 .items-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 15px;
+    gap: 18px;
 }
 
 .store-item {
     background: white;
-    padding: 20px;
-    border-radius: 22px;
+    padding: 25px 15px;
+    border-radius: 24px;
     text-align: center;
     border: 1px solid var(--border);
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    transition: transform 0.2s;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+    transition: var(--transition);
 }
 
 .store-item:hover {
-    transform: translateY(-3px);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
 }
 
 .buy-btn {
@@ -283,83 +247,99 @@ input.incorrect {
     background: var(--primary);
     color: white;
     border: none;
-    padding: 12px;
-    border-radius: 14px;
-    margin-top: 12px;
-    font-weight: bold;
-    font-size: 1rem;
+    padding: 14px;
+    border-radius: 16px;
+    margin-top: 15px;
+    font-weight: 800;
     cursor: pointer;
-    transition: 0.2s;
+    box-shadow: 0 4px 0 var(--primary-dark);
 }
 
 .buy-btn:active {
-    transform: scale(0.96);
+    transform: translateY(3px);
+    box-shadow: 0 1px 0 var(--primary-dark);
 }
 
 .buy-btn:disabled {
     background: #cbd5e0;
+    box-shadow: 0 4px 0 #94a3b8;
     cursor: not-allowed;
+}
+
+/* בר עדכון צהוב */
+.update-banner {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+    background: #ffeb3b;
+    color: #000;
+    padding: 18px 25px;
+    border-radius: 20px;
+    font-weight: 800;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    z-index: 10000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    animation: slideUp 0.5s ease;
+}
+
+@keyframes slideUp {
+    from { transform: translateY(150%); }
+    to { transform: translateY(0); }
+}
+
+.update-banner button {
+    background: black;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
 }
 
 /* פאנל הורים */
 .parent-admin {
-    border: 2px dashed #94a3b8;
-    background: #f1f5f9;
+    border: 3px dashed var(--primary);
+    background: #f1f8f1;
 }
 
 .admin-toggle {
-    background: none;
+    background: var(--primary);
+    color: white;
     border: none;
-    color: #475569;
-    text-decoration: underline;
-    cursor: pointer;
-    font-size: 0.9rem;
-    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 10px;
     width: 100%;
+    margin-bottom: 15px;
+    font-weight: bold;
 }
 
 .admin-del {
-    background: none;
+    background: #fee2e2;
     border: none;
     color: var(--danger);
+    padding: 8px;
+    border-radius: 50%;
+    margin-top: 10px;
     cursor: pointer;
-    font-size: 1.2rem;
-    margin-top: 8px;
-    opacity: 0.5;
-    padding: 5px;
 }
 
-.admin-del:hover {
-    opacity: 1;
-    transform: scale(1.1);
-}
-
-#admin-panel input, #admin-panel select {
-    width: 100%;
-    padding: 12px;
-    margin: 8px 0;
-    border-radius: 12px;
-    border: 1px solid #cbd5e0;
-    font-size: 1rem;
-}
-
-/* זכויות יוצרים */
+/* Footer */
 footer {
     text-align: center;
-    margin-top: 40px;
-    padding: 20px;
-    font-size: 0.9rem;
+    padding: 30px;
     color: var(--text-muted);
-    border-top: 1px solid var(--border);
-    font-weight: 500;
+    font-size: 0.9rem;
 }
 
-/* עזרים */
 .hidden { display: none !important; }
 
-/* התאמה למסכים קטנים */
-@media (max-width: 380px) {
-    .exercise-row span { font-size: 1.2rem; }
-    input[type="number"] { width: 70px; padding: 8px; }
+/* התאמה למובייל */
+@media (max-width: 400px) {
     .items-grid { grid-template-columns: 1fr; }
+    .exercise-row span { font-size: 1.3rem; }
+    input[type="number"] { width: 75px; }
 }
