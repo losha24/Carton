@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>אלופי המתמטיקה - 7.2.2</title>
-    <link rel="stylesheet" href="style.css?v=7.2.2">
+    <title>אלופי המתמטיקה - 3.0.0</title>
+    <link rel="stylesheet" href="style.css?v=3.0.0">
     <link rel="manifest" href="manifest.json">
     <link rel="icon" type="image/png" href="icon.PNG">
-    <link rel="apple-touch-icon" href="icon.PNG">
 </head>
 <body>
     <div class="app-container">
@@ -23,15 +22,16 @@
             <button id="tab-play" class="active">🎮 משחק</button>
             <button id="tab-store">🎁 חנות</button>
             <button id="tab-inventory">🎒 אוסף</button>
-            <button id="install-btn" class="hidden">📲 התקן</button>
             <button onclick="window.checkVersion(true)" id="refresh-btn">🔄</button>
             <button id="reset-game-btn" class="reset-tab-btn">🛑</button>
         </nav>
 
         <main id="view-play" class="view">
             <div class="card summary-card">
-                <div class="progress-container"><div id="progress-bar" class="progress-fill"></div></div>
-                <p id="progress-text">פתור 10 תרגילים בשביל הפתעה!</p>
+                <div class="progress-container">
+                    <div id="progress-bar" class="progress-fill"></div>
+                </div>
+                <p id="progress-text">פתור 10 תרגילים לקבלת הפתעה!</p>
             </div>
             
             <section class="exercise-section card">
@@ -71,6 +71,7 @@
                         <option value="🍦">🍦 גלידה</option>
                         <option value="🎁">🎁 מתנה</option>
                         <option value="🏎️">🏎️ מכונית</option>
+                        <option value="🦄">🦄 הפתעה</option>
                     </select>
                     <button onclick="window.addNewItem()" class="buy-btn">הוסף ✨</button>
                 </div>
@@ -83,8 +84,8 @@
         </main>
 
         <div id="update-banner" class="update-banner hidden">
-            <span>גרסה חדשה 7.2.2 זמינה!</span>
-            <button onclick="location.reload(true)">עדכן 🚀</button>
+            <span>גרסה 3.0.0 מוכנה! 🚀</span>
+            <button onclick="location.reload(true)">עדכן</button>
         </div>
 
         <footer>
@@ -92,6 +93,6 @@
         </footer>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
-    <script src="app.js?v=7.2.2"></script>
+    <script src="app.js?v=3.0.0"></script>
 </body>
 </html>
