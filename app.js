@@ -1,8 +1,8 @@
-const CURRENT_VERSION = "3.5.0";
+const CURRENT_VERSION = "3.5.1";
 
 // --- ניהול תצוגה וגרסה ---
 window.checkVersion = (manual) => {
-    if(manual) alert("גרסה 3.5.0 מעודכנת ✅");
+    if(manual) alert("גרסה 3.5.1 מעודכנת ✅");
     localStorage.setItem('app_version', CURRENT_VERSION);
 };
 
@@ -10,7 +10,7 @@ window.toggleSection = (id) => {
     const el = document.getElementById(id);
     const icon = document.getElementById('icon-' + id.split('-')[1]);
     el.classList.toggle('collapsed');
-    icon.innerText = el.classList.contains('collapsed') ? '◀' : '▼';
+    if(icon) icon.innerText = el.classList.contains('collapsed') ? '◀' : '▼';
 };
 
 window.toggleAdmin = () => document.getElementById('admin-panel').classList.toggle('hidden');
@@ -30,16 +30,27 @@ const getItems = () => [...defaultItems, ...(JSON.parse(localStorage.getItem('ma
 window.addNewItem = () => {
     const name = document.getElementById('new-item-name').value;
     const price = parseInt(document.getElementById('new-item-price').value);
-    if (!name || !price) return;
+    const icon = document.getElementById('new-item-icon').value;
+    
+    if (!name || isNaN(price) || price <= 0) {
+        alert("נא להזין שם תקין ומחיר מעל 0");
+        return;
+    }
+    
     let custom = JSON.parse(localStorage.getItem('math_custom_store')) || [];
-    custom.push({ id: 'c' + Date.now(), name, price, icon: '🌟' });
+    custom.push({ id: 'c' + Date.now(), name, price, icon });
     localStorage.setItem('math_custom_store', JSON.stringify(custom));
+    
+    // איפוס שדות
     document.getElementById('new-item-name').value = '';
     document.getElementById('new-item-price').value = '';
+    
     renderStore(); renderAdminList();
+    alert("הפרס נוסף בהצלחה!");
 };
 
 window.deleteItem = (id) => {
+    if(!confirm("למחוק את הפרס הזה?")) return;
     let custom = JSON.parse(localStorage.getItem('math_custom_store')) || [];
     custom = custom.filter(i => i.id !== id);
     localStorage.setItem('math_custom_store', JSON.stringify(custom));
@@ -48,9 +59,11 @@ window.deleteItem = (id) => {
 
 const renderAdminList = () => {
     const custom = JSON.parse(localStorage.getItem('math_custom_store')) || [];
-    document.getElementById('admin-manage-list').innerHTML = custom.map(i => `
-        <div class="manage-item-row"><span>${i.name}</span><button class="del-btn" onclick="deleteItem('${i.id}')">מחק 🗑️</button></div>
-    `).join('');
+    const container = document.getElementById('admin-manage-list');
+    if(!container) return;
+    container.innerHTML = custom.length ? '<b>פרסים שהוספת:</b>' + custom.map(i => `
+        <div class="manage-item-row"><span>${i.icon} ${i.name}</span><button class="del-btn" onclick="deleteItem('${i.id}')">מחק 🗑️</button></div>
+    `).join('') : '<p>אין פרסים אישיים ברשימה.</p>';
 };
 
 const renderStore = () => {
@@ -59,9 +72,9 @@ const renderStore = () => {
     if(!container) return;
     container.innerHTML = getItems().map(i => `
         <div class="store-item">
-            <div style="font-size:2rem">${i.icon}</div>
-            <b>${i.name}</b><br>
-            <span>${i.price} 🪙</span>
+            <div style="font-size:2.5rem; margin-bottom:5px;">${i.icon}</div>
+            <b style="font-size:1.1rem">${i.name}</b><br>
+            <span style="color:#2d3748; font-weight:bold;">${i.price} 🪙</span>
             <button class="buy-btn" ${coins < i.price ? 'disabled' : ''} onclick="buyItem('${i.id}')">קנה</button>
         </div>
     `).join('');
@@ -76,7 +89,7 @@ window.buyItem = (id) => {
         let my = JSON.parse(localStorage.getItem('math_items')) || [];
         my.push({...item, date: new Date().toLocaleDateString('he-IL')});
         localStorage.setItem('math_items', JSON.stringify(my));
-        updateUI(); renderStore(); alert("תתחדש! הפרס באוסף שלך 🎒");
+        updateUI(); renderStore(); alert(`תתחדש! קנית ${item.name} ${item.icon}`);
     }
 };
 
@@ -130,13 +143,14 @@ document.addEventListener('DOMContentLoaded', () => {
             document.querySelectorAll('.view').forEach(v => v.classList.add('hidden'));
             document.querySelectorAll('.tabs button').forEach(b => b.classList.remove('active'));
             btn.classList.add('active'); 
-            document.getElementById(`view-${btn.id.split('-')[1]}`).classList.remove('hidden');
+            const viewId = `view-${btn.id.split('-')[1]}`;
+            document.getElementById(viewId).classList.remove('hidden');
             if(btn.id === 'tab-store') { renderStore(); renderAdminList(); }
             if(btn.id === 'tab-inventory') {
                 const my = JSON.parse(localStorage.getItem('math_items')) || [];
-                document.getElementById('my-items').innerHTML = my.length ? my.map(i => `<div class="store-item"><div>${i.icon}</div><b>${i.name}</b><br><small>${i.date}</small></div>`).join('') : '<p style="grid-column:1/3;text-align:center">עוד לא קנית כלום</p>';
+                document.getElementById('my-items').innerHTML = my.length ? my.map(i => `<div class="store-item"><div>${i.icon}</div><b>${i.name}</b><br><small>${i.date}</small></div>`).join('') : '<p style="grid-column:1/3;text-align:center">האוסף שלך ריק</p>';
             }
         };
     });
-    document.getElementById('reset-game-btn').onclick = () => { if(confirm("לאפס הכל?")) { localStorage.clear(); location.reload(); }};
+    document.getElementById('reset-game-btn').onclick = () => { if(confirm("למחוק הכל ולהתחיל מהתחלה?")) { localStorage.clear(); location.reload(); }};
 });
