@@ -3,12 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>אלופי המתמטיקה - PRO</title>
-    <link rel="stylesheet" href="style.css?v=1.1.0">
+    <title>אלופי המתמטיקה - גרסה 1.2.0</title>
+    <link rel="stylesheet" href="style.css?v=1.2.0">
     <link rel="manifest" href="manifest.json">
     <link rel="icon" type="image/png" href="icon.PNG">
     <link rel="apple-touch-icon" href="icon.PNG">
-    <meta name="theme-color" content="#4CAF50">
 </head>
 <body>
     <div class="app-container">
@@ -24,21 +23,16 @@
             <button id="tab-play" class="active">🎮 משחק</button>
             <button id="tab-store">🎁 חנות</button>
             <button id="tab-inventory">🎒 האוסף</button>
-            <button id="install-btn" class="hidden install-tab">📱 התקן</button>
             <button id="reset-game-btn" class="reset-btn">🛑 איפוס</button>
         </nav>
 
         <main id="view-play" class="view active-view">
             <div class="card">
-                <div class="progress-container">
-                    <div id="progress-bar" class="progress-fill"></div>
-                </div>
+                <div class="progress-container"><div id="progress-bar" class="progress-fill"></div></div>
                 <p id="progress-text">פתור תרגילים כדי להתקדם!</p>
             </div>
-
-            <section class="exercise-section card">
-                <div class="section-header">
-                    <h3>חיבור וחיסור ➕➖</h3>
+            <div class="exercise-section card">
+                <div class="section-header"><h3>חיבור וחיסור</h3>
                     <div class="btn-group">
                         <button onclick="window.refreshTable('addition')">➕</button>
                         <button onclick="window.refreshTable('subtraction')">➖</button>
@@ -46,11 +40,9 @@
                 </div>
                 <div id="addition-table" class="math-grid"></div>
                 <div id="subtraction-table" class="math-grid" style="margin-top:10px"></div>
-            </section>
-
-            <section class="exercise-section card">
-                <div class="section-header">
-                    <h3>כפל וחילוק ✖️➗</h3>
+            </div>
+            <div class="exercise-section card">
+                <div class="section-header"><h3>כפל וחילוק</h3>
                     <div class="btn-group">
                         <button onclick="window.refreshTable('multiplication')">✖️</button>
                         <button onclick="window.refreshTable('division')">➗</button>
@@ -58,18 +50,36 @@
                 </div>
                 <div id="multiplication-table" class="math-grid"></div>
                 <div id="division-table" class="math-grid" style="margin-top:10px"></div>
-            </section>
+            </div>
         </main>
 
         <main id="view-store" class="view hidden">
+            <div class="parent-admin card">
+                <button onclick="window.toggleAdmin()" class="admin-toggle">⚙️ ניהול הורים</button>
+                <div id="admin-panel" class="hidden">
+                    <h4>הוספת פרס חדש:</h4>
+                    <input type="text" id="new-item-name" placeholder="שם הפרס (למשל: שוקולד)">
+                    <input type="number" id="new-item-price" placeholder="מחיר">
+                    <select id="new-item-icon">
+                        <option value="🍫">🍫</option><option value="🍦">🍦</option>
+                        <option value="🎲">🎲</option><option value="⚽">⚽</option>
+                        <option value="🧸">🧸</option><option value="📱">📱</option>
+                    </select>
+                    <button onclick="window.addNewItem()" class="buy-btn">הוסף לחנות</button>
+                </div>
+            </div>
             <div id="store-items" class="items-grid"></div>
         </main>
 
         <main id="view-inventory" class="view hidden">
             <div id="my-items" class="items-grid"></div>
         </main>
+
+        <footer>
+            <p>© כל הזכויות שמורות - אלכסיי זבודיסקר</p>
+        </footer>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
-    <script src="app.js?v=1.1.0"></script>
+    <script src="app.js?v=1.2.0"></script>
 </body>
 </html>
