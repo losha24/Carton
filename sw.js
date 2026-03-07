@@ -1,4 +1,4 @@
-const CACHE_NAME = 'math-pro-v2';
+const CACHE_NAME = 'math-pro-v2.1';
 const ASSETS = [
     './',
     './index.html',
@@ -8,31 +8,18 @@ const ASSETS = [
     './icon.PNG'
 ];
 
-// התקנה ושמירת קבצים בזיכרון מטמון
-self.addEventListener('install', (event) => {
+self.addEventListener('install', (e) => {
     self.skipWaiting();
-    event.waitUntil(
-        caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS))
-    );
+    e.waitUntil(caches.open(CACHE_NAME).then((c) => c.addAll(ASSETS)));
 });
 
-// ניקוי גרסאות ישנות
-self.addEventListener('activate', (event) => {
-    event.waitUntil(
-        caches.keys().then((keys) => {
-            return Promise.all(
-                keys.map((key) => {
-                    if (key !== CACHE_NAME) return caches.delete(key);
-                })
-            );
-        })
-    );
+self.addEventListener('activate', (e) => {
+    e.waitUntil(caches.keys().then((ks) => {
+        return Promise.all(ks.map((k) => k !== CACHE_NAME && caches.delete(k)));
+    }));
     return self.clients.claim();
 });
 
-// שליפת קבצים (עבודה אופליין)
-self.addEventListener('fetch', (event) => {
-    event.respondWith(
-        fetch(event.request).catch(() => caches.match(event.request))
-    );
+self.addEventListener('fetch', (e) => {
+    e.respondWith(fetch(e.request).catch(() => caches.match(e.request)));
 });
