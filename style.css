@@ -6,105 +6,36 @@
     --card-bg: #ffffff;
 }
 
-body { 
-    background: var(--bg); 
-    font-family: system-ui, -apple-system, sans-serif; 
-    margin: 0; 
-    padding: 10px; 
-    direction: rtl; 
-}
+body { background: var(--bg); font-family: system-ui, sans-serif; margin: 0; padding: 10px; direction: rtl; }
+.app-container { width: 100%; max-width: 450px; margin: auto; padding-bottom: 20px; }
 
-.app-container { 
-    width: 100%; 
-    max-width: 450px; 
-    margin: auto; 
-    padding-bottom: 30px; 
-}
-
-/* כותרות וניקוד */
-header { text-align: center; margin-bottom: 15px; }
-.top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-.level-badge { background: var(--primary); color: white; padding: 6px 15px; border-radius: 20px; font-weight: bold; }
-.score-display { background: var(--gold); padding: 6px 15px; border-radius: 20px; font-weight: bold; font-size: 1.1rem; border: 2px solid #fbc02d; }
-
-/* טאבים בראש העמוד */
+/* טאבים */
 .tabs { display: flex; gap: 4px; margin-bottom: 15px; }
-.tabs button { 
-    flex: 1; padding: 10px 2px; border-radius: 12px; 
-    border: 2px solid var(--primary); background: white; 
-    font-weight: bold; font-size: 0.85rem; cursor: pointer;
-}
+.tabs button { flex: 1; padding: 10px 2px; border-radius: 12px; border: 2px solid var(--primary); background: white; font-weight: bold; font-size: 0.8rem; cursor: pointer; }
 .tabs button.active { background: var(--primary); color: white; }
-#refresh-btn { flex: 0.25; border-color: #cbd5e0; font-size: 1.1rem; }
-#install-btn { background: #6366f1; color: white; border-color: #4f46e5; }
-
-/* כרטיסים וקיפול */
-.card { 
-    background: var(--card-bg); border-radius: 18px; 
-    padding: 15px; margin-bottom: 12px; 
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05); 
-}
-.section-header { 
-    display: flex; justify-content: space-between; align-items: center; 
-    cursor: pointer; padding: 10px; background: #f8fafc; border-radius: 12px;
-    border: 1px solid #e2e8f0; 
-}
-.collapsible-content { 
-    max-height: 1000px; overflow: hidden; 
-    transition: max-height 0.4s ease-in-out; 
-    padding: 10px 5px;
-}
-.collapsible-content.collapsed { max-height: 0; padding: 0 5px; }
-
-/* תרגילים */
-.exercise-row { 
-    display: flex; justify-content: space-between; align-items: center; 
-    padding: 8px 12px; background: #fff; 
-    border: 1px solid #edf2f7; border-radius: 10px; margin-bottom: 6px; 
-}
-.exercise-row span { font-size: 1.3rem; font-weight: bold; }
-input[type="number"] { 
-    width: 65px; text-align: center; border: 2px solid #cbd5e0; 
-    border-radius: 8px; padding: 6px; font-size: 1.2rem; 
-}
-input.correct { border-color: var(--primary); background: #f0fdf4; pointer-events: none; }
+.reset-tab-btn { border-color: #f56565 !important; color: #f56565 !important; flex: 0.25 !important; }
+#refresh-btn { flex: 0.25; border-color: #cbd5e0; }
 
 /* חנות ב-2 עמודות */
-.items-grid { 
-    display: grid !important; 
-    grid-template-columns: 1fr 1fr !important; 
-    gap: 10px; 
-}
-.store-item { 
-    background: white; padding: 10px; border-radius: 15px; 
-    text-align: center; border: 1px solid #eee; 
-    display: flex; flex-direction: column; align-items: center;
-}
+.items-grid { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 10px; }
+.store-item { background: white; padding: 12px; border-radius: 15px; text-align: center; border: 1px solid #eee; display: flex; flex-direction: column; align-items: center; }
 .store-item div:first-child { font-size: 2.2rem; }
-.buy-btn { 
-    width: 100%; background: var(--primary); color: white; 
-    border: none; padding: 8px; border-radius: 10px; 
-    margin-top: 8px; font-weight: bold; cursor: pointer;
-}
 
-/* בר עדכון צהוב */
-.update-banner { 
-    position: fixed; bottom: 20px; left: 10px; right: 10px; 
-    background: #ffeb3b; padding: 15px; border-radius: 15px; 
-    text-align: center; z-index: 1000; 
-    box-shadow: 0 5px 20px rgba(0,0,0,0.2); 
-    border: 2px solid #fbc02d; font-weight: bold; 
-}
+/* קיפול */
+.section-header { display: flex; justify-content: space-between; align-items: center; cursor: pointer; padding: 10px; background: #f8fafc; border-radius: 12px; border: 1px solid #e2e8f0; margin-bottom: 5px; }
+.collapsible-content { max-height: 1000px; overflow: hidden; transition: max-height 0.4s ease-in-out; }
+.collapsible-content.collapsed { max-height: 0; }
 
+/* תרגילים */
+.exercise-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background: #fff; border: 1px solid #edf2f7; border-radius: 10px; margin-bottom: 6px; }
+input[type="number"] { width: 65px; text-align: center; border: 2px solid #cbd5e0; border-radius: 8px; padding: 6px; font-size: 1.2rem; }
+input.correct { border-color: var(--primary); background: #f0fdf4; pointer-events: none; }
+
+/* כפתור קנייה */
+.buy-btn { width: 100%; background: var(--primary); color: white; border: none; padding: 8px; border-radius: 10px; margin-top: 8px; font-weight: bold; cursor: pointer; }
+.buy-btn:disabled { background: #cbd5e0; }
+
+.update-banner { position: fixed; bottom: 20px; left: 10px; right: 10px; background: #ffeb3b; padding: 15px; border-radius: 15px; text-align: center; z-index: 1000; box-shadow: 0 5px 20px rgba(0,0,0,0.2); border: 2px solid #fbc02d; font-weight: bold; }
 .hidden { display: none !important; }
-.reset-btn { 
-    width: 100%; background: none; border: 1px solid #feb2b2; 
-    color: #f56565; padding: 8px; border-radius: 10px; 
-    margin-top: 20px; font-size: 0.8rem; 
-}
-
-.refresh-section-btn {
-    width: 100%; background: #edf2f7; border: 1px solid #cbd5e0; 
-    padding: 8px; border-radius: 10px; margin-top: 10px; 
-    cursor: pointer; font-weight: bold; color: #4a5568;
-}
+footer { text-align: center; font-size: 0.75rem; color: #718096; margin-top: 30px; border-top: 1px solid #e2e8f0; padding-top: 10px; }
+.refresh-section-btn { width: 100%; background: #edf2f7; border: 1px solid #cbd5e0; padding: 8px; border-radius: 10px; margin-top: 10px; cursor: pointer; font-weight: bold; }
