@@ -1,4 +1,17 @@
-const CURRENT_VERSION = "3.5.5";
+const CURRENT_VERSION = "3.5.9";
+
+// פונקציית רענון ועדכון גרסה מהשרת
+window.forceUpdate = () => {
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistrations().then(function(registrations) {
+            for(let registration of registrations) {
+                registration.update();
+            }
+        });
+    }
+    // רענון כפוי שעוקף זיכרון מטמון
+    window.location.reload(true);
+};
 
 const state = {
     coins: parseInt(localStorage.getItem('math_coins')) || 0,
@@ -7,7 +20,7 @@ const state = {
     customStore: JSON.parse(localStorage.getItem('math_custom_store')) || []
 };
 
-// פתיחה וסגירה של סקציות
+// ניהול תצוגה
 window.toggleSection = (id) => {
     const el = document.getElementById(id);
     const icon = document.getElementById('icon-' + id.split('-')[1]);
@@ -17,24 +30,26 @@ window.toggleSection = (id) => {
 
 window.toggleAdmin = () => document.getElementById('admin-panel').classList.toggle('hidden');
 
-// חנות וניהול
+// חנות ופרסים
 const defaultItems = [
     { id: 'd1', name: '10 דק טלפון', price: 15, icon: '📱' },
     { id: 'd2', name: 'גלידה', price: 40, icon: '🍦' },
-    { id: 'd3', name: 'ממתק', price: 10, icon: '🍭' },
-    { id: 'd4', name: 'סרט', price: 60, icon: '🍿' }
+    { id: 'd3', name: 'ממתק', price: 10, icon: '🍭' }
 ];
 
 window.addNewItem = () => {
     const name = document.getElementById('new-item-name').value;
     const price = parseInt(document.getElementById('new-item-price').value);
     const icon = document.getElementById('new-item-icon').value;
-    if (!name || isNaN(price) || price <= 0) return alert("נא להזין פרטים תקינים");
+    if (!name || isNaN(price) || price <= 0) return alert("נא להזין שם פרס ומחיר תקין");
+    
     state.customStore.push({ id: 'c' + Date.now(), name, price, icon });
     localStorage.setItem('math_custom_store', JSON.stringify(state.customStore));
+    
     document.getElementById('new-item-name').value = '';
     document.getElementById('new-item-price').value = '';
     renderStore(); renderAdminList();
+    alert("הפרס נוסף לחנות! 🎁");
 };
 
 window.deleteItem = (id) => {
@@ -57,7 +72,7 @@ const renderStore = () => {
         <div class="store-item">
             <div style="font-size:2.5rem; margin-bottom:5px">${i.icon}</div>
             <b style="font-size:1.1rem">${i.name}</b><br>
-            <span style="font-weight:bold">${i.price} 🪙</span>
+            <span style="font-weight:bold; color:#2d3748">${i.price} 🪙</span>
             <button class="buy-btn" ${state.coins < i.price ? 'disabled' : ''} onclick="buyItem('${i.id}')">קנה</button>
         </div>
     `).join('');
@@ -70,11 +85,11 @@ window.buyItem = (id) => {
         state.coins -= item.price;
         state.inventory.push({...item, date: new Date().toLocaleDateString('he-IL')});
         saveData(); updateUI(); renderStore();
-        alert(`תתחדש! קנית ${item.name} ${item.icon}`);
+        alert(`כל הכבוד! קנית ${item.name} ${item.icon}`);
     }
 };
 
-// תרגילים
+// מחולל תרגילים
 window.refreshTable = (type) => {
     const container = document.getElementById(`${type}-table`);
     if (!container) return; container.innerHTML = '';
@@ -103,7 +118,7 @@ document.body.addEventListener('change', (e) => {
         const input = e.target;
         if (parseInt(input.value) === parseInt(input.dataset.ans)) {
             input.classList.add('correct'); input.disabled = true;
-            state.coins += (input.dataset.type === 'multiplication' || input.dataset.type === 'division') ? 3 : 1;
+            state.coins += (input.dataset.type.includes('multi') || input.dataset.type.includes('div')) ? 3 : 1;
             state.solvedToday++;
             let prog = (state.solvedToday % 10) * 10 || 100;
             document.getElementById('progress-bar').style.width = prog + '%';
@@ -119,7 +134,8 @@ document.body.addEventListener('change', (e) => {
 document.addEventListener('DOMContentLoaded', () => {
     updateUI();
     ['addition', 'subtraction', 'multiplication', 'division'].forEach(t => refreshTable(t));
-    document.querySelectorAll('.tabs button:not(.reset-tab-btn)').forEach(btn => {
+    
+    document.querySelectorAll('.tabs button:not(.update-tab-btn):not(.reset-tab-btn)').forEach(btn => {
         btn.onclick = () => {
             document.querySelectorAll('.view').forEach(v => v.classList.add('hidden'));
             document.querySelectorAll('.tabs button').forEach(b => b.classList.remove('active'));
@@ -131,5 +147,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         };
     });
-    document.getElementById('reset-game-btn').onclick = () => { if(confirm("לאפס הכל?")) { localStorage.clear(); location.reload(); }};
+    
+    document.getElementById('reset-game-btn').onclick = () => { 
+        if(confirm("בטוח שרוצים לאפס את כל המטבעות והפרסים? זה לא ניתן לביטול!")) { 
+            localStorage.clear(); location.reload(); 
+        }
+    };
 });
