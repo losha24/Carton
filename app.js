@@ -1,31 +1,15 @@
-const CURRENT_VERSION = "7.2.2";
+const CURRENT_VERSION = "3.0.0";
 
 // בדיקת גרסה
 window.checkVersion = (isManual = false) => {
     const saved = localStorage.getItem('app_version');
     if (saved && saved !== CURRENT_VERSION) {
         document.getElementById('update-banner').classList.remove('hidden');
-    } else if (isManual) { alert("הגרסה שלך מעודכנת! (7.2.2)"); }
+    } else if (isManual) { alert("גרסה 3.0.0 מעודכנת!"); }
     localStorage.setItem('app_version', CURRENT_VERSION);
 };
 
-// התקנה (PWA)
-let deferredPrompt;
-window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault(); deferredPrompt = e;
-    document.getElementById('install-btn').classList.remove('hidden');
-});
-
-document.getElementById('install-btn').onclick = async () => {
-    if (deferredPrompt) {
-        deferredPrompt.prompt();
-        const { outcome } = await deferredPrompt.userChoice;
-        if (outcome === 'accepted') document.getElementById('install-btn').classList.add('hidden');
-        deferredPrompt = null;
-    }
-};
-
-// תרגילים
+// יצירת תרגילים
 window.refreshTable = (type) => {
     const container = document.getElementById(`${type}-table`);
     if (!container) return; container.innerHTML = '';
@@ -35,8 +19,8 @@ window.refreshTable = (type) => {
     for (let i = 0; i < 3; i++) {
         let n1, n2, ans, sym;
         if (type === 'addition') {
-            let a = Math.floor(Math.random()*range)+1, b = Math.floor(Math.random()*range)+1;
-            n1 = Math.max(a,b); n2 = Math.min(a,b); ans = n1+n2; sym = '+';
+            n1 = Math.floor(Math.random()*range)+1; n2 = Math.floor(Math.random()*range)+1;
+            ans = n1+n2; sym = '+';
         } else if (type === 'subtraction') {
             n1 = Math.floor(Math.random()*range)+5;
             n2 = Math.floor(Math.random()*n1);
@@ -53,7 +37,6 @@ window.refreshTable = (type) => {
     }
 };
 
-// קיפול
 window.toggleSection = (id) => {
     const el = document.getElementById(id);
     el.classList.toggle('collapsed');
@@ -90,8 +73,8 @@ window.buyItem = (id) => {
         let my = JSON.parse(localStorage.getItem('math_items')) || [];
         my.push({...item, date: new Date().toLocaleDateString('he-IL')});
         localStorage.setItem('math_items', JSON.stringify(my));
-        updateUI(); renderStore(); alert("תתחדש!");
-    } else { alert("אין מספיק מטבעות!"); }
+        updateUI(); renderStore(); alert("קנית בהצלחה!");
+    } else { alert("חסרים לך מטבעות!"); }
 };
 
 const updateUI = () => {
@@ -112,25 +95,42 @@ const renderStore = () => {
     `).join('');
 };
 
+// לוגיקת פתרון - שחזור מדויק מגרסה 2
+let solvedCount = 0;
 document.addEventListener('DOMContentLoaded', () => {
     checkVersion();
-    let solved = 0;
+    
     document.body.addEventListener('input', (e) => {
         if (e.target.dataset.ans) {
             const input = e.target;
             if (parseInt(input.value) === parseInt(input.dataset.ans) && !input.classList.contains('correct')) {
                 input.classList.add('correct'); input.disabled = true;
+                
+                // עדכון מטבעות
                 let s = parseInt(localStorage.getItem('math_coins')) || 0;
                 s += (input.dataset.type === 'multiplication' || input.dataset.type === 'division') ? 3 : 1;
-                localStorage.setItem('math_coins', s); solved++;
-                document.getElementById('progress-bar').style.width = (solved * 10) + '%';
-                if (solved >= 10) { confetti(); solved = 0; }
+                localStorage.setItem('math_coins', s);
+                
+                // עדכון התקדמות (10 תרגילים = 100%)
+                solvedCount++;
+                let currentProgress = (solvedCount % 10) * 10;
+                if (currentProgress === 0 && solvedCount > 0) currentProgress = 100;
+                
+                document.getElementById('progress-bar').style.width = currentProgress + '%';
+                
+                if (solvedCount > 0 && solvedCount % 10 === 0) {
+                    confetti();
+                    setTimeout(() => {
+                        document.getElementById('progress-bar').style.width = '0%';
+                    }, 1500);
+                }
                 updateUI();
             }
         }
     });
     
-    document.querySelectorAll('.tabs button:not(#refresh-btn):not(#install-btn):not(#reset-game-btn)').forEach(btn => {
+    // ניווט טאבים
+    document.querySelectorAll('.tabs button:not(#refresh-btn):not(#reset-game-btn)').forEach(btn => {
         btn.onclick = () => {
             document.querySelectorAll('.view').forEach(v => v.classList.add('hidden'));
             document.querySelectorAll('.tabs button').forEach(b => b.classList.remove('active'));
@@ -140,12 +140,12 @@ document.addEventListener('DOMContentLoaded', () => {
             if(btn.id === 'tab-store') renderStore();
             if(btn.id === 'tab-inventory') {
                 const my = JSON.parse(localStorage.getItem('math_items')) || [];
-                document.getElementById('my-items').innerHTML = my.map(i => `<div class="store-item"><div>${i.icon}</div><b>${i.name}</b><small>${i.date}</small></div>`).join('');
+                document.getElementById('my-items').innerHTML = my.map(i => `<div class="store-item"><div>${i.icon}</div><b>${i.name}</b><br><small>${i.date}</small></div>`).join('');
             }
         };
     });
 
-    document.getElementById('reset-game-btn').onclick = () => { if(confirm("לאפס את כל ההתקדמות והמטבעות?")) { localStorage.clear(); location.reload(); } };
+    document.getElementById('reset-game-btn').onclick = () => { if(confirm("לאפס הכל?")) { localStorage.clear(); location.reload(); } };
     ['addition', 'subtraction', 'multiplication', 'division'].forEach(t => refreshTable(t));
     updateUI();
 });
