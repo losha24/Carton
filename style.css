@@ -4,56 +4,46 @@
     --gold: #FFD700;
     --error: #f44336;
     --bg: #F0F7FF;
-    --text: #2d3748;
 }
 
-body, html { height: 100%; margin: 0; padding: 0; overflow: hidden; font-family: system-ui, sans-serif; background: var(--bg); direction: rtl; color: var(--text); }
+body, html { height: 100%; margin: 0; padding: 0; overflow: hidden; font-family: system-ui, sans-serif; background: var(--bg); direction: rtl; }
 .app-container { display: flex; flex-direction: column; height: 100vh; max-width: 500px; margin: auto; padding: 10px; box-sizing: border-box; }
 
 .main-title { text-align: center; color: #1a365d; font-size: 1.5rem; margin: 5px 0; font-weight: 800; }
-.scroll-area { flex: 1; overflow-y: auto; padding-bottom: 20px; -webkit-overflow-scrolling: touch; }
+.scroll-area { flex: 1; overflow-y: auto; padding-bottom: 10px; -webkit-overflow-scrolling: touch; }
 
 .stats-container { display: flex; gap: 8px; margin-bottom: 10px; }
 .stat-card { flex: 1; background: white; padding: 8px; border-radius: 15px; text-align: center; border-bottom: 4px solid #ddd; }
-.stat-card.level { border-color: var(--primary); }
-.stat-card.coins { border-color: var(--gold); }
 .stat-value { font-size: 1.2rem; font-weight: 800; }
 
-.tabs { display: flex; gap: 4px; margin-bottom: 15px; }
-.tabs button { flex: 1; padding: 10px 2px; border-radius: 12px; border: 2px solid var(--primary); background: white; font-weight: bold; font-size: 0.8rem; cursor: pointer; transition: 0.2s; }
+.tabs { display: flex; gap: 4px; margin-bottom: 10px; }
+.tabs button { flex: 1; padding: 10px 2px; border-radius: 12px; border: 2px solid var(--primary); background: white; font-weight: bold; font-size: 0.75rem; cursor: pointer; }
 .tabs button.active { background: var(--primary); color: white; }
-
-/* כפתורי מערכת בתפריט */
-.update-tab-btn { border-color: var(--secondary) !important; color: var(--secondary); flex: 0.7 !important; }
-.reset-tab-btn { border-color: var(--error) !important; color: var(--error); flex: 0.8 !important; font-size: 0.75rem !important; }
+.update-tab-btn { border-color: var(--secondary) !important; color: var(--secondary); }
+.reset-tab-btn { border-color: var(--error) !important; color: var(--error); }
 
 .card { background: white; border-radius: 18px; padding: 15px; margin-bottom: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-.section-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f0f0f0; padding-bottom: 8px; margin-bottom: 10px; }
-.clickable-area { display: flex; align-items: center; flex: 1; cursor: pointer; }
-.mini-refresh { background: #f1f5f9; border: 1px solid #cbd5e0; border-radius: 10px; padding: 5px 12px; font-size: 1.2rem; cursor: pointer; }
+.section-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f0f0f0; padding-bottom: 5px; }
+.mini-refresh { background: #f1f5f9; border: 1px solid #cbd5e0; border-radius: 10px; padding: 5px 10px; font-size: 1.1rem; }
 
 .exercise-row { display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #f8fafc; border-radius: 12px; margin-top: 8px; }
-input[type="number"] { width: 75px; text-align: center; border: 2px solid #cbd5e0; border-radius: 10px; padding: 8px; font-size: 1.2rem; outline: none; font-weight: bold; }
+input[type="number"] { width: 75px; text-align: center; border: 2px solid #cbd5e0; border-radius: 10px; padding: 8px; font-size: 1.2rem; outline: none; }
 input.correct { border-color: var(--primary); background: #f0fdf4; pointer-events: none; }
 input.wrong { border-color: var(--error); background: #fee2e2; animation: shake 0.4s; }
 
 .items-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.store-item { background: white; padding: 12px; border-radius: 20px; text-align: center; border: 1px solid #edf2f7; display: flex; flex-direction: column; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
-.buy-btn { width: 100%; background: var(--secondary); color: white; border: none; padding: 10px; border-radius: 10px; font-weight: bold; margin-top: 8px; cursor: pointer; }
-.buy-btn:disabled { background: #cbd5e0; cursor: not-allowed; }
+.store-item { background: white; padding: 12px; border-radius: 20px; text-align: center; border: 1px solid #edf2f7; display: flex; flex-direction: column; align-items: center; }
+.buy-btn { width: 100%; background: var(--secondary); color: white; border: none; padding: 8px; border-radius: 10px; font-weight: bold; margin-top: 8px; }
 
 .admin-box { border: 2px dashed #cbd5e0; background: #f8fafc; }
-.admin-toggle-btn { width: 100%; background: none; border: none; padding: 5px; color: #718096; font-size: 0.85rem; cursor: pointer; font-weight: bold; }
-.admin-form input, .admin-select { width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 10px; border: 1px solid #ddd; box-sizing: border-box; font-size: 1rem; }
-.add-item-btn { width: 100%; background: var(--primary); color: white; border: none; padding: 12px; border-radius: 10px; font-weight: bold; cursor: pointer; }
-.manage-item-row { display: flex; justify-content: space-between; padding: 10px; background: white; border-radius: 8px; margin-top: 5px; border: 1px solid #eee; }
-.del-btn { color: var(--error); border: none; background: none; font-weight: bold; cursor: pointer; }
+.admin-form input, .admin-select { width: 100%; padding: 10px; margin-bottom: 8px; border-radius: 8px; border: 1px solid #ddd; }
+.add-item-btn { width: 100%; background: var(--primary); color: white; border: none; padding: 10px; border-radius: 10px; font-weight: bold; }
 
-.progress-container { background: #e2e8f0; height: 14px; border-radius: 10px; overflow: hidden; margin: 10px 0 5px; }
+.progress-container { background: #e2e8f0; height: 12px; border-radius: 10px; overflow: hidden; margin: 10px 0 5px; }
 .progress-fill { background: linear-gradient(90deg, #4CAF50, #8BC34A); width: 0%; height: 100%; transition: width 0.4s; }
-#progress-text { text-align: center; font-size: 0.8rem; color: #718096; margin: 0; }
+
+.main-footer { text-align: center; font-size: 0.7rem; color: #a0aec0; padding: 8px; border-top: 1px solid #edf2f7; background: white; margin-top: auto; width: 100%; }
 
 @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
 .hidden { display: none !important; }
 .collapsible-content.collapsed { display: none; }
-footer { text-align: center; font-size: 0.75rem; color: #a0aec0; padding: 15px; border-top: 1px solid #eee; margin-top: auto; }
