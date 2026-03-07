@@ -2,9 +2,9 @@
 <html lang="he" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>אלופי המתמטיקה - V1.0.2</title>
-    <link rel="stylesheet" href="style.css?v=1.0.2">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>אלופי המתמטיקה - PRO</title>
+    <link rel="stylesheet" href="style.css?v=1.1.0">
     <link rel="manifest" href="manifest.json">
     <link rel="icon" type="image/png" href="icon.PNG">
     <link rel="apple-touch-icon" href="icon.PNG">
@@ -13,44 +13,52 @@
 <body>
     <div class="app-container">
         <header>
-            <h1>אלופי המתמטיקה 🏆</h1>
-            <div class="score-display">
-                <span>מטבעות: </span><span id="score">0</span> 🪙
+            <div class="top-bar">
+                <div class="level-badge">רמה <span id="user-level">1</span></div>
+                <div class="score-display">🪙 <span id="score">0</span></div>
             </div>
+            <h1>אלופי המתמטיקה 🏆</h1>
         </header>
 
         <nav class="tabs">
-            <button id="tab-play" class="active">משחק 🎮</button>
-            <button id="tab-store">חנות 🎁</button>
-            <button id="tab-inventory">האוסף 🎒</button>
-            <button id="install-btn" class="hidden install-tab">התקן 📱</button>
-            <button id="reset-game-btn" class="reset-btn">איפוס 🛑</button>
+            <button id="tab-play" class="active">🎮 משחק</button>
+            <button id="tab-store">🎁 חנות</button>
+            <button id="tab-inventory">🎒 האוסף</button>
+            <button id="install-btn" class="hidden install-tab">📱 התקן</button>
+            <button id="reset-game-btn" class="reset-btn">🛑 איפוס</button>
         </nav>
 
         <main id="view-play" class="view active-view">
-            <div class="exercise-section card">
+            <div class="card">
+                <div class="progress-container">
+                    <div id="progress-bar" class="progress-fill"></div>
+                </div>
+                <p id="progress-text">פתור תרגילים כדי להתקדם!</p>
+            </div>
+
+            <section class="exercise-section card">
                 <div class="section-header">
                     <h3>חיבור וחיסור ➕➖</h3>
-                    <div>
-                        <button class="refresh-small" onclick="window.refreshTable('addition')">➕</button>
-                        <button class="refresh-small" onclick="window.refreshTable('subtraction')">➖</button>
+                    <div class="btn-group">
+                        <button onclick="window.refreshTable('addition')">➕</button>
+                        <button onclick="window.refreshTable('subtraction')">➖</button>
                     </div>
                 </div>
                 <div id="addition-table" class="math-grid"></div>
-                <div id="subtraction-table" class="math-grid" style="margin-top:15px"></div>
-            </div>
+                <div id="subtraction-table" class="math-grid" style="margin-top:10px"></div>
+            </section>
 
-            <div class="exercise-section card">
+            <section class="exercise-section card">
                 <div class="section-header">
                     <h3>כפל וחילוק ✖️➗</h3>
-                    <div>
-                        <button class="refresh-small" onclick="window.refreshTable('multiplication')">✖️</button>
-                        <button class="refresh-small" onclick="window.refreshTable('division')">➗</button>
+                    <div class="btn-group">
+                        <button onclick="window.refreshTable('multiplication')">✖️</button>
+                        <button onclick="window.refreshTable('division')">➗</button>
                     </div>
                 </div>
                 <div id="multiplication-table" class="math-grid"></div>
-                <div id="division-table" class="math-grid" style="margin-top:15px"></div>
-            </div>
+                <div id="division-table" class="math-grid" style="margin-top:10px"></div>
+            </section>
         </main>
 
         <main id="view-store" class="view hidden">
@@ -61,6 +69,7 @@
             <div id="my-items" class="items-grid"></div>
         </main>
     </div>
-    <script src="app.js?v=1.0.2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <script src="app.js?v=1.1.0"></script>
 </body>
 </html>
