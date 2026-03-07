@@ -3,17 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>אלופי המתמטיקה - 3.0.0</title>
-    <link rel="stylesheet" href="style.css?v=3.0.0">
+    <title>אלופי המתמטיקה - 3.2.0</title>
+    <link rel="stylesheet" href="style.css?v=3.2.0">
     <link rel="manifest" href="manifest.json">
     <link rel="icon" type="image/png" href="icon.PNG">
 </head>
 <body>
     <div class="app-container">
         <header>
-            <div class="top-bar">
-                <div class="level-badge">רמה <span id="user-level">1</span></div>
-                <div class="score-display">🪙 <span id="score">0</span></div>
+            <div class="stats-container">
+                <div class="stat-card level">
+                    <span class="stat-label">רמה</span>
+                    <span id="user-level" class="stat-value">1</span>
+                </div>
+                <div class="stat-card coins">
+                    <span class="stat-label">מטבעות</span>
+                    <span class="stat-value">🪙 <span id="score">0</span></span>
+                </div>
             </div>
             <h1>אלופי המתמטיקה 🏆</h1>
         </header>
@@ -28,10 +34,8 @@
 
         <main id="view-play" class="view">
             <div class="card summary-card">
-                <div class="progress-container">
-                    <div id="progress-bar" class="progress-fill"></div>
-                </div>
-                <p id="progress-text">פתור 10 תרגילים לקבלת הפתעה!</p>
+                <div class="progress-container"><div id="progress-bar" class="progress-fill"></div></div>
+                <p id="progress-text">עוד 10 תרגילים להפתעה! ✨</p>
             </div>
             
             <section class="exercise-section card">
@@ -60,20 +64,25 @@
         </main>
 
         <main id="view-store" class="view hidden">
-            <div class="parent-admin card">
-                <button onclick="window.toggleAdmin()" class="admin-toggle">⚙️ ניהול הורים</button>
-                <div id="admin-panel" class="hidden">
-                    <input type="text" id="new-item-name" placeholder="שם הפרס">
-                    <input type="number" id="new-item-price" placeholder="מחיר">
+            <div class="admin-box card">
+                <button onclick="window.toggleAdmin()" class="admin-toggle-btn">⚙️ הגדרות הורים (הוספה/מחיקה)</button>
+                <div id="admin-panel" class="admin-content hidden">
+                    <h4>הוספת פרס חדש</h4>
+                    <input type="text" id="new-item-name" placeholder="מה הפרס?">
+                    <input type="number" id="new-item-price" placeholder="מחיר במטבעות">
                     <select id="new-item-icon">
-                        <option value="📱">📱 טלפון</option>
-                        <option value="🎮">🎮 מחשב</option>
-                        <option value="🍦">🍦 גלידה</option>
-                        <option value="🎁">🎁 מתנה</option>
-                        <option value="🏎️">🏎️ מכונית</option>
-                        <option value="🦄">🦄 הפתעה</option>
+                        <option value="⚽">⚽ כדורגל</option>
+                        <option value="🍕">🍕 פיצה</option>
+                        <option value="🧸">🧸 בובה</option>
+                        <option value="🍿">🍿 סרט</option>
+                        <option value="🚲">🚲 אופניים</option>
+                        <option value="🍭">🍭 ממתק</option>
+                        <option value="🎮">🎮 משחק מחשב</option>
                     </select>
-                    <button onclick="window.addNewItem()" class="buy-btn">הוסף ✨</button>
+                    <button onclick="window.addNewItem()" class="add-item-btn">שמור פרס ✨</button>
+                    <hr>
+                    <h4>ניהול פרסים קיימים</h4>
+                    <div id="admin-manage-list"></div>
                 </div>
             </div>
             <div id="store-items" class="items-grid"></div>
@@ -83,16 +92,11 @@
             <div id="my-items" class="items-grid"></div>
         </main>
 
-        <div id="update-banner" class="update-banner hidden">
-            <span>גרסה 3.0.0 מוכנה! 🚀</span>
-            <button onclick="location.reload(true)">עדכן</button>
-        </div>
-
         <footer>
             <p>© כל הזכויות שמורות - אלכסיי זבודיסקר</p>
         </footer>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
-    <script src="app.js?v=3.0.0"></script>
+    <script src="app.js?v=3.2.0"></script>
 </body>
 </html>
