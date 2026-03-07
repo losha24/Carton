@@ -1,15 +1,11 @@
 const CURRENT_VERSION = "3.5.9";
 
-// פונקציית רענון ועדכון גרסה מהשרת
 window.forceUpdate = () => {
     if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.getRegistrations().then(function(registrations) {
-            for(let registration of registrations) {
-                registration.update();
-            }
+        navigator.serviceWorker.getRegistrations().then(registrations => {
+            for(let registration of registrations) registration.update();
         });
     }
-    // רענון כפוי שעוקף זיכרון מטמון
     window.location.reload(true);
 };
 
@@ -20,7 +16,6 @@ const state = {
     customStore: JSON.parse(localStorage.getItem('math_custom_store')) || []
 };
 
-// ניהול תצוגה
 window.toggleSection = (id) => {
     const el = document.getElementById(id);
     const icon = document.getElementById('icon-' + id.split('-')[1]);
@@ -30,7 +25,6 @@ window.toggleSection = (id) => {
 
 window.toggleAdmin = () => document.getElementById('admin-panel').classList.toggle('hidden');
 
-// חנות ופרסים
 const defaultItems = [
     { id: 'd1', name: '10 דק טלפון', price: 15, icon: '📱' },
     { id: 'd2', name: 'גלידה', price: 40, icon: '🍦' },
@@ -41,15 +35,12 @@ window.addNewItem = () => {
     const name = document.getElementById('new-item-name').value;
     const price = parseInt(document.getElementById('new-item-price').value);
     const icon = document.getElementById('new-item-icon').value;
-    if (!name || isNaN(price) || price <= 0) return alert("נא להזין שם פרס ומחיר תקין");
-    
+    if (!name || isNaN(price) || price <= 0) return alert("נא להזין פרטים תקינים");
     state.customStore.push({ id: 'c' + Date.now(), name, price, icon });
     localStorage.setItem('math_custom_store', JSON.stringify(state.customStore));
-    
     document.getElementById('new-item-name').value = '';
     document.getElementById('new-item-price').value = '';
     renderStore(); renderAdminList();
-    alert("הפרס נוסף לחנות! 🎁");
 };
 
 window.deleteItem = (id) => {
@@ -60,9 +51,7 @@ window.deleteItem = (id) => {
 
 const renderAdminList = () => {
     const container = document.getElementById('admin-manage-list');
-    container.innerHTML = state.customStore.map(i => `
-        <div class="manage-item-row"><span>${i.icon} ${i.name}</span><button class="del-btn" onclick="deleteItem('${i.id}')">מחק</button></div>
-    `).join('');
+    container.innerHTML = state.customStore.map(i => `<div class="manage-item-row"><span>${i.icon} ${i.name}</span><button class="del-btn" onclick="deleteItem('${i.id}')">מחק</button></div>`).join('');
 };
 
 const renderStore = () => {
@@ -70,9 +59,9 @@ const renderStore = () => {
     const allItems = [...defaultItems, ...state.customStore];
     container.innerHTML = allItems.map(i => `
         <div class="store-item">
-            <div style="font-size:2.5rem; margin-bottom:5px">${i.icon}</div>
-            <b style="font-size:1.1rem">${i.name}</b><br>
-            <span style="font-weight:bold; color:#2d3748">${i.price} 🪙</span>
+            <div style="font-size:2.2rem; margin-bottom:5px">${i.icon}</div>
+            <b style="font-size:1rem">${i.name}</b><br>
+            <span style="font-weight:bold">${i.price} 🪙</span>
             <button class="buy-btn" ${state.coins < i.price ? 'disabled' : ''} onclick="buyItem('${i.id}')">קנה</button>
         </div>
     `).join('');
@@ -85,11 +74,10 @@ window.buyItem = (id) => {
         state.coins -= item.price;
         state.inventory.push({...item, date: new Date().toLocaleDateString('he-IL')});
         saveData(); updateUI(); renderStore();
-        alert(`כל הכבוד! קנית ${item.name} ${item.icon}`);
+        alert(`תתחדש! קנית ${item.name} ${item.icon}`);
     }
 };
 
-// מחולל תרגילים
 window.refreshTable = (type) => {
     const container = document.getElementById(`${type}-table`);
     if (!container) return; container.innerHTML = '';
@@ -122,7 +110,7 @@ document.body.addEventListener('change', (e) => {
             state.solvedToday++;
             let prog = (state.solvedToday % 10) * 10 || 100;
             document.getElementById('progress-bar').style.width = prog + '%';
-            if (state.solvedToday % 10 === 0) { confetti(); }
+            if (state.solvedToday % 10 === 0) confetti();
             saveData(); updateUI();
         } else {
             input.classList.add('wrong');
@@ -134,7 +122,6 @@ document.body.addEventListener('change', (e) => {
 document.addEventListener('DOMContentLoaded', () => {
     updateUI();
     ['addition', 'subtraction', 'multiplication', 'division'].forEach(t => refreshTable(t));
-    
     document.querySelectorAll('.tabs button:not(.update-tab-btn):not(.reset-tab-btn)').forEach(btn => {
         btn.onclick = () => {
             document.querySelectorAll('.view').forEach(v => v.classList.add('hidden'));
@@ -147,10 +134,5 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         };
     });
-    
-    document.getElementById('reset-game-btn').onclick = () => { 
-        if(confirm("בטוח שרוצים לאפס את כל המטבעות והפרסים? זה לא ניתן לביטול!")) { 
-            localStorage.clear(); location.reload(); 
-        }
-    };
+    document.getElementById('reset-game-btn').onclick = () => { if(confirm("לאפס הכל?")) { localStorage.clear(); location.reload(); }};
 });
