@@ -1,9 +1,24 @@
 {
-  "name": "אלופי המתמטיקה",
-  "short_name": "מתמטיקה",
-  "start_url": "index.html",
+  "short_name": "אלופי החשבון",
+  "name": "אלופי המתמטיקה - PRO",
+  "description": "משחק למידה חווייתי - אלכסיי זבודיסקר",
+  "icons": [
+    {
+      "src": "icon.PNG",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon.PNG",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#F0F7FF",
   "theme_color": "#4CAF50",
-  "icons": [{ "src": "icon.PNG", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }]
+  "background_color": "#F0F7FF",
+  "dir": "rtl",
+  "lang": "he"
 }
