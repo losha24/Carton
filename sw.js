@@ -1,4 +1,4 @@
-const CACHE_NAME = 'math-pro-v7.2.1';
+const CACHE_NAME = 'math-pro-v7.2.2';
 const ASSETS = ['./', './index.html', './style.css', './app.js', './manifest.json', './icon.PNG'];
 
 self.addEventListener('install', (e) => { 
