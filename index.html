@@ -74,39 +74,25 @@
                     <div id="admin-panel" class="admin-content hidden">
                         <div class="admin-form">
                             <input type="text" id="new-item-name" placeholder="שם הפרס">
-                            <input type="number" id="new-item-price" placeholder="מחיר במטבעות">
-                            <label style="font-size: 0.8rem; font-weight: bold; display: block; margin-bottom: 5px;">בחר אייקון:</label>
+                            <input type="number" id="new-item-price" placeholder="מחיר">
                             <select id="new-item-icon" class="admin-select">
-                                <optgroup label="🍕 אוכל וממתקים">
-                                    <option value="🍕">🍕 פיצה</option>
-                                    <option value="🍦">🍦 גלידה</option>
-                                    <option value="🍭">🍭 ממתק</option>
-                                    <option value="🍿">🍿 פופקורן</option>
-                                    <option value="🍩">🍩 דונאט</option>
-                                    <option value="🍫">🍫 שוקולד</option>
-                                    <option value="🍔">🍔 המבורגר</option>
-                                    <option value="🍬">🍬 סוכריה</option>
+                                <optgroup label="🍕 אוכל">
+                                    <option value="🍕">🍕 פיצה</option><option value="🍦">🍦 גלידה</option>
+                                    <option value="🍭">🍭 ממתק</option><option value="🍿">🍿 פופקורן</option>
+                                    <option value="🍩">🍩 דונאט</option><option value="🍫">🍫 שוקולד</option>
                                 </optgroup>
-                                <optgroup label="🎮 פנאי ומשחקים">
-                                    <option value="🎮">🎮 משחק מחשב</option>
-                                    <option value="📱">📱 זמן מסך</option>
-                                    <option value="🧸">🧸 צעצוע</option>
-                                    <option value="🎲">🎲 משחק קופסה</option>
-                                    <option value="🎬">🎬 קולנוע</option>
-                                    <option value="🎨">🎨 יצירה</option>
+                                <optgroup label="🎮 פנאי">
+                                    <option value="🎮">🎮 מחשב</option><option value="📱">📱 טלפון</option>
+                                    <option value="🧸">🧸 צעצוע</option><option value="🎲">🎲 משחק</option>
+                                    <option value="🎬">🎬 סרט</option>
                                 </optgroup>
-                                <optgroup label="⚽ ספורט וחוץ">
-                                    <option value="⚽">⚽ כדורגל</option>
-                                    <option value="🚲">🚲 אופניים</option>
+                                <optgroup label="⚽ ספורט">
+                                    <option value="⚽">⚽ כדורגל</option><option value="🚲">🚲 אופניים</option>
                                     <option value="🏊">🏊 בריכה</option>
-                                    <option value="🛹">🛹 סקייטבורד</option>
-                                    <option value="🏰">🏰 פארק</option>
                                 </optgroup>
-                                <optgroup label="🌟 מיוחדים">
-                                    <option value="🎁">🎁 הפתעה</option>
-                                    <option value="⭐">⭐ כוכב זהב</option>
+                                <optgroup label="🌟 מיוחד">
+                                    <option value="🎁">🎁 הפתעה</option><option value="⭐">⭐ כוכב</option>
                                     <option value="💵">💵 דמי כיס</option>
-                                    <option value="🐶">🐶 זמן עם חיה</option>
                                 </optgroup>
                             </select>
                             <button onclick="window.addNewItem()" class="add-item-btn">שמור בחנות ✨</button>
@@ -122,7 +108,7 @@
             </main>
         </div>
 
-        <footer>
+        <footer class="main-footer">
             <p>© כל הזכויות שמורות - אלכסיי זבודיסקר | גרסה 3.5.9</p>
         </footer>
     </div>
