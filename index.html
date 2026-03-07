@@ -27,14 +27,17 @@
             <button id="reset-game-btn" class="reset-btn">🛑 איפוס</button>
         </nav>
 
-        <main id="view-play" class="view active-view">
+        <main id="view-play" class="view">
             <div class="card">
-                <div class="progress-container"><div id="progress-bar" class="progress-fill"></div></div>
+                <div class="progress-container">
+                    <div id="progress-bar" class="progress-fill"></div>
+                </div>
                 <p id="progress-text">פתור תרגילים כדי להתקדם!</p>
             </div>
             
             <section class="exercise-section card">
-                <div class="section-header"><h3>חיבור וחיסור ➕➖</h3>
+                <div class="section-header">
+                    <h3>חיבור וחיסור ➕➖</h3>
                     <div class="btn-group">
                         <button onclick="window.refreshTable('addition')">➕</button>
                         <button onclick="window.refreshTable('subtraction')">➖</button>
@@ -45,7 +48,8 @@
             </section>
 
             <section class="exercise-section card">
-                <div class="section-header"><h3>כפל וחילוק ✖️➗</h3>
+                <div class="section-header">
+                    <h3>כפל וחילוק ✖️➗</h3>
                     <div class="btn-group">
                         <button onclick="window.refreshTable('multiplication')">✖️</button>
                         <button onclick="window.refreshTable('division')">➗</button>
@@ -60,20 +64,34 @@
             <div class="parent-admin card">
                 <button onclick="window.toggleAdmin()" class="admin-toggle">⚙️ ניהול הורים (הוספה/מחיקה)</button>
                 <div id="admin-panel" class="hidden">
-                    <h4>הוספת פרס חדש:</h4>
-                    <input type="text" id="new-item-name" placeholder="שם הפרס">
-                    <input type="number" id="new-item-price" placeholder="מחיר">
+                    <h4>הוספת פרס חדש לחנות:</h4>
+                    <input type="text" id="new-item-name" placeholder="שם הפרס (למשל: שעה בטאבלט)">
+                    <input type="number" id="new-item-price" placeholder="מחיר במטבעות">
                     <select id="new-item-icon">
-                        <optgroup label="אוכל וזמן"><option value="🍫">🍫 שוקולד</option><option value="🍦">🍦 גלידה</option><option value="📱">📱 זמן מסך</option><option value="🎮">🎮 מחשב</option></optgroup>
-                        <optgroup label="מתנות"><option value="🎁">🎁 מתנה</option><option value="⚽">⚽ כדור</option><option value="🧸">🧸 צעצוע</option></optgroup>
+                        <optgroup label="אוכל">
+                            <option value="🍫">🍫 שוקולד</option>
+                            <option value="🍦">🍦 גלידה</option>
+                            <option value="🍕">🍕 פיצה</option>
+                        </optgroup>
+                        <optgroup label="זמן ומשחק">
+                            <option value="📱">📱 זמן מסך</option>
+                            <option value="🎮">🎮 משחק מחשב</option>
+                            <option value="🎬">🎬 סרט</option>
+                        </optgroup>
+                        <optgroup label="מתנות">
+                            <option value="🎁">🎁 מתנה</option>
+                            <option value="⚽">⚽ כדור</option>
+                            <option value="🧸">🧸 צעצוע</option>
+                        </optgroup>
                     </select>
-                    <button onclick="window.addNewItem()" class="buy-btn">הוסף לחנות</button>
+                    <button onclick="window.addNewItem()" class="buy-btn">הוסף לחנות ✨</button>
                 </div>
             </div>
             <div id="store-items" class="items-grid"></div>
         </main>
 
         <main id="view-inventory" class="view hidden">
+            <h3 style="text-align: center;">הפרסים שקניתי 🎒</h3>
             <div id="my-items" class="items-grid"></div>
         </main>
 
@@ -81,6 +99,7 @@
             <p>© כל הזכויות שמורות - אלכסיי זבודיסקר</p>
         </footer>
     </div>
+
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <script src="app.js?v=1.2.2"></script>
 </body>
