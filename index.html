@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>אלופי המתמטיקה - PRO</title>
-    <link rel="stylesheet" href="style.css?v=2.1">
+    <link rel="stylesheet" href="style.css?v=2">
     <link rel="manifest" href="manifest.json">
     <link rel="icon" type="image/png" href="icon.PNG">
     <link rel="apple-touch-icon" href="icon.PNG">
@@ -28,11 +28,9 @@
         </nav>
 
         <main id="view-play" class="view">
-            <div class="card">
-                <div class="progress-container">
-                    <div id="progress-bar" class="progress-fill"></div>
-                </div>
-                <p id="progress-text">פתור 10 תרגילים כדי לקבל הפתעה!</p>
+            <div class="card summary-card">
+                <div class="progress-container"><div id="progress-bar" class="progress-fill"></div></div>
+                <p id="progress-text">פתור 10 תרגילים בשביל הפתעה!</p>
             </div>
             
             <section class="exercise-section card">
@@ -62,18 +60,31 @@
 
         <main id="view-store" class="view hidden">
             <div class="parent-admin card">
-                <button onclick="window.toggleAdmin()" class="admin-toggle">⚙️ ניהול הורים (הוספה/מחיקה)</button>
+                <button onclick="window.toggleAdmin()" class="admin-toggle">⚙️ ניהול הורים (הוספת פרסים)</button>
                 <div id="admin-panel" class="hidden">
                     <h4>הוספת פרס חדש:</h4>
-                    <input type="text" id="new-item-name" placeholder="שם הפרס (למשל: שוקולד)">
+                    <input type="text" id="new-item-name" placeholder="שם הפרס (למשל: שעה בטאבלט)">
                     <input type="number" id="new-item-price" placeholder="מחיר במטבעות">
                     <select id="new-item-icon">
-                        <option value="🍫">🍫 שוקולד</option>
-                        <option value="🍦">🍦 גלידה</option>
-                        <option value="🍕">🍕 פיצה</option>
-                        <option value="📱">📱 זמן מסך</option>
-                        <option value="🎮">🎮 מחשב</option>
-                        <option value="🎁">🎁 מתנה</option>
+                        <optgroup label="זמן ומסכים">
+                            <option value="📱">📱 זמן טלפון</option>
+                            <option value="🎮">🎮 זמן מחשב</option>
+                            <option value="📺">📺 טלוויזיה</option>
+                            <option value="⏱️">⏱️ זמן חופשי</option>
+                        </optgroup>
+                        <optgroup label="פינוקים">
+                            <option value="🍫">🍫 שוקולד</option>
+                            <option value="🍦">🍦 גלידה</option>
+                            <option value="🍕">🍕 פיצה</option>
+                            <option value="🍭">🍭 סוכרייה</option>
+                            <option value="🍔">🍔 המבורגר</option>
+                        </optgroup>
+                        <optgroup label="פעילות ומתנות">
+                            <option value="🎁">🎁 מתנה</option>
+                            <option value="⚽">⚽ כדור</option>
+                            <option value="🎬">🎬 סרט</option>
+                            <option value="🏊">🏊 בריכה</option>
+                        </optgroup>
                     </select>
                     <button onclick="window.addNewItem()" class="buy-btn">הוסף לחנות ✨</button>
                 </div>
@@ -82,7 +93,7 @@
         </main>
 
         <main id="view-inventory" class="view hidden">
-            <h3 style="text-align: center;">הפרסים שלי 🎒</h3>
+            <h3 style="text-align: center;">האוסף שלי 🎒</h3>
             <div id="my-items" class="items-grid"></div>
         </main>
 
@@ -91,12 +102,9 @@
             <button onclick="location.reload(true)">עדכן עכשיו</button>
         </div>
 
-        <footer>
-            <p>© כל הזכויות שמורות - אלכסיי זבודיסקר</p>
-        </footer>
+        <footer><p>© כל הזכויות שמורות - אלכסיי זבודיסקר</p></footer>
     </div>
-
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
-    <script src="app.js?v=2.1"></script>
+    <script src="app.js?v=2"></script>
 </body>
 </html>
