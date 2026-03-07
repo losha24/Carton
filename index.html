@@ -3,12 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>אלופי המתמטיקה - PRO</title>
-    <link rel="stylesheet" href="style.css?v=2.1">
+    <title>אלופי המתמטיקה - 7.2.1</title>
+    <link rel="stylesheet" href="style.css?v=7.2.1">
     <link rel="manifest" href="manifest.json">
     <link rel="icon" type="image/png" href="icon.PNG">
     <link rel="apple-touch-icon" href="icon.PNG">
-    <meta name="theme-color" content="#4CAF50">
 </head>
 <body>
     <div class="app-container">
@@ -23,8 +22,9 @@
         <nav class="tabs">
             <button id="tab-play" class="active">🎮 משחק</button>
             <button id="tab-store">🎁 חנות</button>
-            <button id="tab-inventory">🎒 האוסף</button>
-            <button id="reset-game-btn" class="reset-btn">🛑 איפוס</button>
+            <button id="tab-inventory">🎒 אוסף</button>
+            <button id="install-btn" class="hidden">📲 התקן</button>
+            <button onclick="window.checkVersion(true)" id="refresh-btn" title="בדוק עדכון">🔄</button>
         </nav>
 
         <main id="view-play" class="view">
@@ -34,64 +34,73 @@
             </div>
             
             <section class="exercise-section card">
-                <div class="section-header">
+                <div class="section-header clickable" onclick="window.toggleSection('section-basic')">
                     <h3>חיבור וחיסור ➕➖</h3>
                     <div class="btn-group">
-                        <button onclick="window.refreshTable('addition')">➕</button>
-                        <button onclick="window.refreshTable('subtraction')">➖</button>
+                        <span class="toggle-icon">▼</span>
                     </div>
                 </div>
-                <div id="addition-table" class="math-grid"></div>
-                <div id="subtraction-table" class="math-grid" style="margin-top:10px"></div>
+                <div id="section-basic" class="collapsible-content">
+                    <div id="addition-table" class="math-grid"></div>
+                    <div id="subtraction-table" class="math-grid" style="margin-top:10px"></div>
+                    <button class="refresh-section-btn" onclick="refreshTable('addition'); refreshTable('subtraction');">תרגילים חדשים 🎲</button>
+                </div>
             </section>
 
             <section class="exercise-section card">
-                <div class="section-header">
+                <div class="section-header clickable" onclick="window.toggleSection('section-advanced')">
                     <h3>כפל וחילוק ✖️➗</h3>
                     <div class="btn-group">
-                        <button onclick="window.refreshTable('multiplication')">✖️</button>
-                        <button onclick="window.refreshTable('division')">➗</button>
+                        <span class="toggle-icon">▼</span>
                     </div>
                 </div>
-                <div id="multiplication-table" class="math-grid"></div>
-                <div id="division-table" class="math-grid" style="margin-top:10px"></div>
+                <div id="section-advanced" class="collapsible-content">
+                    <div id="multiplication-table" class="math-grid"></div>
+                    <div id="division-table" class="math-grid" style="margin-top:10px"></div>
+                    <button class="refresh-section-btn" onclick="refreshTable('multiplication'); refreshTable('division');">תרגילים חדשים 🎲</button>
+                </div>
             </section>
+            
+            <button id="reset-game-btn" class="reset-btn">🛑 איפוס התקדמות</button>
         </main>
 
         <main id="view-store" class="view hidden">
             <div class="parent-admin card">
                 <button onclick="window.toggleAdmin()" class="admin-toggle">⚙️ ניהול הורים</button>
                 <div id="admin-panel" class="hidden">
-                    <h4>הוספת פרס:</h4>
                     <input type="text" id="new-item-name" placeholder="שם הפרס">
                     <input type="number" id="new-item-price" placeholder="מחיר">
                     <select id="new-item-icon">
-                        <option value="📱">📱 טלפון</option>
-                        <option value="🎮">🎮 מחשב</option>
-                        <option value="🍫">🍫 שוקולד</option>
-                        <option value="🍦">🍦 גלידה</option>
-                        <option value="🎁">🎁 מתנה</option>
-                        <option value="⚽">⚽ כדור</option>
+                        <optgroup label="זמן ומסכים">
+                            <option value="📱">📱 טלפון</option>
+                            <option value="🎮">🎮 מחשב</option>
+                            <option value="📺">📺 טלוויזיה</option>
+                        </optgroup>
+                        <optgroup label="מתנות וכיף">
+                            <option value="🍫">🍫 שוקולד</option>
+                            <option value="🍦">🍦 גלידה</option>
+                            <option value="🎁">🎁 מתנה</option>
+                            <option value="🏎️">🏎️ מכונית</option>
+                            <option value="🏰">🏰 לונה פארק</option>
+                            <option value="🦄">🦄 הפתעה</option>
+                        </optgroup>
                     </select>
-                    <button onclick="window.addNewItem()" class="buy-btn">הוסף ✨</button>
+                    <button onclick="window.addNewItem()" class="buy-btn">הוסף לחנות ✨</button>
                 </div>
             </div>
             <div id="store-items" class="items-grid"></div>
         </main>
 
         <main id="view-inventory" class="view hidden">
-            <h3 style="text-align: center;">האוסף שלי 🎒</h3>
             <div id="my-items" class="items-grid"></div>
         </main>
 
         <div id="update-banner" class="update-banner hidden">
-            <span>גרסה 2.1 זמינה! 🚀</span>
-            <button onclick="location.reload(true)">עדכן</button>
+            <span>גרסה חדשה 7.2.1 זמינה!</span>
+            <button onclick="location.reload(true)">עדכן 🚀</button>
         </div>
-
-        <footer><p>© אלכסיי זבודיסקר</p></footer>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
-    <script src="app.js?v=2.1"></script>
+    <script src="app.js?v=7.2.1"></script>
 </body>
 </html>
