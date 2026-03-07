@@ -8,6 +8,7 @@
     <link rel="manifest" href="manifest.json">
     <link rel="icon" type="image/png" href="icon.PNG">
     <link rel="apple-touch-icon" href="icon.PNG">
+    <meta name="theme-color" content="#4CAF50">
 </head>
 <body>
     <div class="app-container">
@@ -32,8 +33,8 @@
                 <p id="progress-text">פתור תרגילים כדי להתקדם!</p>
             </div>
             
-            <div class="exercise-section card">
-                <div class="section-header"><h3>חיבור וחיסור</h3>
+            <section class="exercise-section card">
+                <div class="section-header"><h3>חיבור וחיסור ➕➖</h3>
                     <div class="btn-group">
                         <button onclick="window.refreshTable('addition')">➕</button>
                         <button onclick="window.refreshTable('subtraction')">➖</button>
@@ -41,10 +42,10 @@
                 </div>
                 <div id="addition-table" class="math-grid"></div>
                 <div id="subtraction-table" class="math-grid" style="margin-top:10px"></div>
-            </div>
+            </section>
 
-            <div class="exercise-section card">
-                <div class="section-header"><h3>כפל וחילוק</h3>
+            <section class="exercise-section card">
+                <div class="section-header"><h3>כפל וחילוק ✖️➗</h3>
                     <div class="btn-group">
                         <button onclick="window.refreshTable('multiplication')">✖️</button>
                         <button onclick="window.refreshTable('division')">➗</button>
@@ -52,7 +53,7 @@
                 </div>
                 <div id="multiplication-table" class="math-grid"></div>
                 <div id="division-table" class="math-grid" style="margin-top:10px"></div>
-            </div>
+            </section>
         </main>
 
         <main id="view-store" class="view hidden">
@@ -63,15 +64,8 @@
                     <input type="text" id="new-item-name" placeholder="שם הפרס">
                     <input type="number" id="new-item-price" placeholder="מחיר">
                     <select id="new-item-icon">
-                        <optgroup label="אוכל">
-                            <option value="🍫">🍫 שוקולד</option><option value="🍦">🍦 גלידה</option><option value="🍕">🍕 פיצה</option>
-                        </optgroup>
-                        <optgroup label="זמן">
-                            <option value="📱">📱 זמן מסך</option><option value="🎮">🎮 מחשב</option><option value="🎬">🎬 סרט</option>
-                        </optgroup>
-                        <optgroup label="מתנות">
-                            <option value="🎁">🎁 מתנה</option><option value="⚽">⚽ כדור</option><option value="🧸">🧸 צעצוע</option>
-                        </optgroup>
+                        <optgroup label="אוכל וזמן"><option value="🍫">🍫 שוקולד</option><option value="🍦">🍦 גלידה</option><option value="📱">📱 זמן מסך</option><option value="🎮">🎮 מחשב</option></optgroup>
+                        <optgroup label="מתנות"><option value="🎁">🎁 מתנה</option><option value="⚽">⚽ כדור</option><option value="🧸">🧸 צעצוע</option></optgroup>
                     </select>
                     <button onclick="window.addNewItem()" class="buy-btn">הוסף לחנות</button>
                 </div>
