@@ -3,7 +3,7 @@
  * פותח עבור אלכסיי זבודיסקר
  */
 
-const CURRENT_VERSION = "2";
+const CURRENT_VERSION = "2.1";
 
 // בדיקת גרסה לרענון
 function checkVersion() {
