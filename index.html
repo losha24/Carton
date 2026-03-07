@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>אלופי המתמטיקה - 7.2.1</title>
-    <link rel="stylesheet" href="style.css?v=7.2.1">
+    <title>אלופי המתמטיקה - 7.2.2</title>
+    <link rel="stylesheet" href="style.css?v=7.2.2">
     <link rel="manifest" href="manifest.json">
     <link rel="icon" type="image/png" href="icon.PNG">
     <link rel="apple-touch-icon" href="icon.PNG">
@@ -24,7 +24,8 @@
             <button id="tab-store">🎁 חנות</button>
             <button id="tab-inventory">🎒 אוסף</button>
             <button id="install-btn" class="hidden">📲 התקן</button>
-            <button onclick="window.checkVersion(true)" id="refresh-btn" title="בדוק עדכון">🔄</button>
+            <button onclick="window.checkVersion(true)" id="refresh-btn">🔄</button>
+            <button id="reset-game-btn" class="reset-tab-btn">🛑</button>
         </nav>
 
         <main id="view-play" class="view">
@@ -36,9 +37,7 @@
             <section class="exercise-section card">
                 <div class="section-header clickable" onclick="window.toggleSection('section-basic')">
                     <h3>חיבור וחיסור ➕➖</h3>
-                    <div class="btn-group">
-                        <span class="toggle-icon">▼</span>
-                    </div>
+                    <span class="toggle-icon">▼</span>
                 </div>
                 <div id="section-basic" class="collapsible-content">
                     <div id="addition-table" class="math-grid"></div>
@@ -50,9 +49,7 @@
             <section class="exercise-section card">
                 <div class="section-header clickable" onclick="window.toggleSection('section-advanced')">
                     <h3>כפל וחילוק ✖️➗</h3>
-                    <div class="btn-group">
-                        <span class="toggle-icon">▼</span>
-                    </div>
+                    <span class="toggle-icon">▼</span>
                 </div>
                 <div id="section-advanced" class="collapsible-content">
                     <div id="multiplication-table" class="math-grid"></div>
@@ -60,8 +57,6 @@
                     <button class="refresh-section-btn" onclick="refreshTable('multiplication'); refreshTable('division');">תרגילים חדשים 🎲</button>
                 </div>
             </section>
-            
-            <button id="reset-game-btn" class="reset-btn">🛑 איפוס התקדמות</button>
         </main>
 
         <main id="view-store" class="view hidden">
@@ -71,21 +66,13 @@
                     <input type="text" id="new-item-name" placeholder="שם הפרס">
                     <input type="number" id="new-item-price" placeholder="מחיר">
                     <select id="new-item-icon">
-                        <optgroup label="זמן ומסכים">
-                            <option value="📱">📱 טלפון</option>
-                            <option value="🎮">🎮 מחשב</option>
-                            <option value="📺">📺 טלוויזיה</option>
-                        </optgroup>
-                        <optgroup label="מתנות וכיף">
-                            <option value="🍫">🍫 שוקולד</option>
-                            <option value="🍦">🍦 גלידה</option>
-                            <option value="🎁">🎁 מתנה</option>
-                            <option value="🏎️">🏎️ מכונית</option>
-                            <option value="🏰">🏰 לונה פארק</option>
-                            <option value="🦄">🦄 הפתעה</option>
-                        </optgroup>
+                        <option value="📱">📱 טלפון</option>
+                        <option value="🎮">🎮 מחשב</option>
+                        <option value="🍦">🍦 גלידה</option>
+                        <option value="🎁">🎁 מתנה</option>
+                        <option value="🏎️">🏎️ מכונית</option>
                     </select>
-                    <button onclick="window.addNewItem()" class="buy-btn">הוסף לחנות ✨</button>
+                    <button onclick="window.addNewItem()" class="buy-btn">הוסף ✨</button>
                 </div>
             </div>
             <div id="store-items" class="items-grid"></div>
@@ -96,11 +83,15 @@
         </main>
 
         <div id="update-banner" class="update-banner hidden">
-            <span>גרסה חדשה 7.2.1 זמינה!</span>
+            <span>גרסה חדשה 7.2.2 זמינה!</span>
             <button onclick="location.reload(true)">עדכן 🚀</button>
         </div>
+
+        <footer>
+            <p>© כל הזכויות שמורות - אלכסיי זבודיסקר</p>
+        </footer>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
-    <script src="app.js?v=7.2.1"></script>
+    <script src="app.js?v=7.2.2"></script>
 </body>
 </html>
