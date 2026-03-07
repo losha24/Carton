@@ -1,45 +1,38 @@
-const CACHE_NAME = 'math-pro-v1.1.4'; // שינוי הגרסה מכריח את הדפדפן להתעדכן
+const CACHE_NAME = 'math-pro-v2';
 const ASSETS = [
-  './',
-  './index.html',
-  './style.css',
-  './app.js',
-  './manifest.json',
-  './icon.PNG'
+    './',
+    './index.html',
+    './style.css',
+    './app.js',
+    './manifest.json',
+    './icon.PNG'
 ];
 
-// התקנה - שמירת הקבצים בזיכרון המטמון
+// התקנה ושמירת קבצים בזיכרון מטמון
 self.addEventListener('install', (event) => {
-  self.skipWaiting(); // גורם לגרסה החדשה להיכנס לתוקף מיד
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(ASSETS);
-    })
-  );
+    self.skipWaiting();
+    event.waitUntil(
+        caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS))
+    );
 });
 
-// הפעלה - מחיקת גרסאות קודמות וישנות של האפליקציה
+// ניקוי גרסאות ישנות
 self.addEventListener('activate', (event) => {
-  event.waitUntil(
-    caches.keys().then((cacheNames) => {
-      return Promise.all(
-        cacheNames.map((cacheName) => {
-          if (cacheName !== CACHE_NAME) {
-            console.log('מנקה מטמון ישן:', cacheName);
-            return caches.delete(cacheName);
-          }
+    event.waitUntil(
+        caches.keys().then((keys) => {
+            return Promise.all(
+                keys.map((key) => {
+                    if (key !== CACHE_NAME) return caches.delete(key);
+                })
+            );
         })
-      );
-    })
-  );
-  return self.clients.claim();
+    );
+    return self.clients.claim();
 });
 
-// אסטרטגיית אחזור - קודם בודק בשרת ואז במטמון (כדי להבטיח עדכונים)
+// שליפת קבצים (עבודה אופליין)
 self.addEventListener('fetch', (event) => {
-  event.respondWith(
-    fetch(event.request).catch(() => {
-      return caches.match(event.request);
-    })
-  );
+    event.respondWith(
+        fetch(event.request).catch(() => caches.match(event.request))
+    );
 });
