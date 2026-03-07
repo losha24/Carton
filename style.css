@@ -7,9 +7,10 @@
     --gold: #FFD700;
     --card-bg: #ffffff;
     --text-main: #333;
+    --border: #e2e8f0;
 }
 
-/* הגדרות כלליות */
+/* הגדרות בסיס */
 body {
     background: var(--bg);
     font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
@@ -17,14 +18,14 @@ body {
     padding: 10px;
     direction: rtl;
     color: var(--text-main);
-    line-height: 1.5;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .app-container {
     width: 100%;
     max-width: 500px;
     margin: auto;
-    padding-bottom: 40px;
+    padding-bottom: 30px;
 }
 
 /* כותרת עליונה */
@@ -46,7 +47,6 @@ header {
     padding: 6px 15px;
     border-radius: 20px;
     font-weight: bold;
-    font-size: 0.9rem;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
@@ -59,115 +59,77 @@ header {
     box-shadow: 0 3px 6px rgba(0,0,0,0.15);
 }
 
-h1 {
-    font-size: 1.8rem;
-    margin: 10px 0;
-    color: #2c3e50;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
-}
-
-/* טאבים לניווט */
+/* תפריט ניווט */
 .tabs {
     display: flex;
-    gap: 8px;
-    margin-bottom: 20px;
+    gap: 5px;
+    margin-bottom: 15px;
     overflow-x: auto;
-    padding: 5px;
-    scrollbar-width: none; /* הסתרת סרול במידת הצורך */
+    padding: 5px 0;
 }
 
 .tabs button {
     flex: 1;
-    padding: 12px 8px;
+    padding: 12px 5px;
     border-radius: 15px;
     border: 2px solid var(--primary);
     background: white;
     cursor: pointer;
     font-weight: bold;
-    font-size: 0.9rem;
-    transition: all 0.2s ease;
     white-space: nowrap;
+    transition: 0.2s;
 }
 
 .tabs button.active {
     background: var(--primary);
     color: white;
-    box-shadow: 0 4px 8px rgba(76, 175, 80, 0.3);
     transform: translateY(-2px);
 }
 
 .reset-btn {
     border-color: var(--danger) !important;
     color: var(--danger);
+    font-size: 0.8rem;
 }
 
-/* כרטיסיות ותוכן */
+/* כרטיסיות */
 .card {
     background: var(--card-bg);
     border-radius: 20px;
     padding: 15px;
     margin-bottom: 15px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
 }
 
 /* מד התקדמות */
 .progress-container {
-    background: #e0e0e0;
-    height: 18px;
+    background: #e2e8f0;
+    height: 15px;
     border-radius: 10px;
     overflow: hidden;
-    margin-bottom: 8px;
+    margin-bottom: 5px;
 }
 
 .progress-fill {
     background: linear-gradient(90deg, #4CAF50, #8BC34A);
     width: 0%;
     height: 100%;
-    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: width 0.5s ease-out;
 }
 
 #progress-text {
     text-align: center;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     font-weight: bold;
-    color: #666;
-    margin: 0;
+    color: #64748b;
 }
 
-/* תרגילים */
+/* עיצוב תרגילים */
 .section-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 15px;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 8px;
-}
-
-.section-header h3 {
-    margin: 0;
-    font-size: 1.1rem;
-}
-
-.btn-group button {
-    padding: 6px 12px;
-    border-radius: 10px;
-    border: 1px solid #ddd;
-    background: #fff;
-    font-size: 1.1rem;
-    cursor: pointer;
-    transition: 0.2s;
-}
-
-.btn-group button:active {
-    background: #f0f0f0;
-    transform: scale(0.95);
-}
-
-.math-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+    margin-bottom: 12px;
 }
 
 .exercise-row {
@@ -175,39 +137,47 @@ h1 {
     justify-content: space-between;
     align-items: center;
     padding: 10px 15px;
-    background: #fdfdfd;
-    border-radius: 15px;
-    border: 1px solid #f0f0f0;
+    background: #f8fafc;
+    border-radius: 12px;
+    margin-bottom: 8px;
+    border: 1px solid #edf2f7;
 }
 
 .exercise-row span {
-    font-size: 1.3rem;
+    font-size: 1.4rem;
     font-weight: bold;
-    color: #444;
 }
 
-input {
+input[type="number"] {
     width: 70px;
     text-align: center;
-    border: 3px solid #ddd;
+    border: 3px solid #cbd5e0;
     border-radius: 12px;
     padding: 8px;
     font-size: 1.2rem;
     outline: none;
+    transition: 0.3s;
 }
 
 input.correct {
     border-color: var(--primary);
-    background: #E8F5E9;
-    color: #2e7d32;
+    background: #f0fdf4;
+    color: #166534;
 }
 
 input.incorrect {
     border-color: var(--danger);
-    background: #FFEBEE;
+    background: #fef2f2;
+    animation: shake 0.3s;
 }
 
-/* חנות ופריטים */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-4px); }
+    75% { transform: translateX(4px); }
+}
+
+/* חנות ופרסים */
 .items-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -219,8 +189,11 @@ input.incorrect {
     padding: 15px;
     border-radius: 20px;
     text-align: center;
-    border: 1px solid #eee;
-    transition: 0.2s;
+    border: 1px solid var(--border);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .buy-btn {
@@ -229,67 +202,64 @@ input.incorrect {
     color: white;
     border: none;
     padding: 10px;
-    border-radius: 12px;
-    margin-top: 10px;
+    border-radius: 10px;
+    margin-top: 8px;
     font-weight: bold;
     cursor: pointer;
 }
 
 .buy-btn:disabled {
-    background: #ccc;
+    background: #cbd5e0;
     cursor: not-allowed;
 }
 
-/* פאנל הורים */
+/* פאנל הורים ומחיקה */
 .parent-admin {
-    border: 2px dashed #cbd5e0;
-    background: #f8fafc;
-    text-align: center;
+    border: 2px dashed #94a3b8;
+    background: #f1f5f9;
 }
 
 .admin-toggle {
     background: none;
     border: none;
-    color: #718096;
+    color: #475569;
     text-decoration: underline;
     cursor: pointer;
     font-size: 0.85rem;
-    margin-bottom: 10px;
+    width: 100%;
 }
 
-#admin-panel {
+.admin-del {
+    background: none;
+    border: none;
+    color: var(--danger);
+    cursor: pointer;
+    font-size: 1.1rem;
     margin-top: 10px;
-    padding-top: 10px;
-    border-top: 1px solid #e2e8f0;
+    opacity: 0.5;
+    transition: 0.2s;
 }
 
-#admin-panel h4 { margin-top: 0; margin-bottom: 10px; }
+.admin-del:hover { opacity: 1; }
 
 #admin-panel input, #admin-panel select {
-    width: calc(100% - 20px);
-    margin-bottom: 10px;
+    width: 100%;
     padding: 10px;
-    border-radius: 10px;
+    margin: 5px 0;
+    border-radius: 8px;
     border: 1px solid #cbd5e0;
-    font-size: 0.9rem;
+    box-sizing: border-box;
 }
 
 /* זכויות יוצרים */
 footer {
     text-align: center;
-    margin-top: 20px;
+    margin-top: 30px;
     padding: 15px;
     font-size: 0.85rem;
-    color: #7f8c8d;
-    font-weight: 500;
+    color: #64748b;
+    border-top: 1px solid #e2e8f0;
 }
 
 /* עזרים */
 .hidden { display: none !important; }
-
-/* התאמה למסכים קטנים מאוד */
-@media (max-width: 360px) {
-    .exercise-row span { font-size: 1.1rem; }
-    input { width: 60px; font-size: 1rem; }
-    h1 { font-size: 1.5rem; }
-}
